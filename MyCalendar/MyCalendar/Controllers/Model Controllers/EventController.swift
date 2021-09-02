@@ -1,0 +1,97 @@
+//
+//  CreateController.swift
+//  MyCalendar
+//
+//  Created by Bryan Gomez on 8/31/21.
+//
+
+import Foundation
+import CloudKit
+
+class EventController {
+    static let shared = EventController()
+
+    let publicDB = CKContainer.default().publicCloudDatabase
+    var events = [Event]()
+    
+//    var sortedEvents: [[Event]] = []
+//    var earlier = [Event]()
+//    var today = [Event]
+//    var tomorrowEvents
+
+
+    
+//MARK: - CRUD
+    func createEvent(with name: String, note: String, dueDate: Date, completion: @escaping (Result<Event?, EventError>) -> Void) {
+        let newEvent = Event(name: name, note: note, dueDate: dueDate)
+        let record = CKRecord(event: newEvent)
+
+        
+        publicDB.save(record) { record, error in
+            if let error = error {
+               print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+               completion(.failure(.ckError(error)))
+            }
+            guard let record = record,
+                  let savedContact = Event(ckRecord: record) else { return completion(.failure(.couldNotUnwrap))}
+            print("Saved a contact successfully with id: \(savedContact.recordID)")
+            completion(.success(savedContact))
+        }
+    }
+    
+    func fetchEvent(completion: @escaping (Result<[Event], EventError>) -> Void) {
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: EventStrings.recordTypeKey, predicate: predicate)
+       
+
+        publicDB.perform(query, inZoneWith: nil) { records, error in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                completion(.failure(.ckError(error)))
+            }
+            guard let records = records else { return completion(.failure(.couldNotUnwrap))}
+            print("Events have been fetched successfully.")
+            
+            let event = records.compactMap { Event(ckRecord: $0) }
+            let sortedContacts = event.sorted(by: { $0.dueDate > $1.dueDate})
+            completion(.success(sortedContacts))
+        }
+    }
+    
+    func updateEvent(_ event: Event, completion: @escaping (Result<Event?, EventError>) -> Void) {
+        
+        let record = CKRecord(event: event)
+        let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+        operation.savePolicy = .changedKeys
+        operation.qualityOfService = .userInteractive
+        operation.modifyRecordsCompletionBlock = { (records, _, error) in
+            if let error = error {
+              print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                completion(.failure(.ckError(error)))
+            }
+            guard let record = records?.first,
+                  let updateEvent = Event(ckRecord: record) else { return completion(.failure(.couldNotUnwrap))}
+            print("Updated contact with a name '\(updateEvent.name)' successfully in your iCloud.")
+            completion(.success(updateEvent))
+        }
+        publicDB.add(operation)
+    }
+    
+    func delete(_ event: Event, completion: @escaping (Result<Bool, EventError>) -> Void) {
+        let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [event.recordID])
+        operation.qualityOfService = .userInteractive
+        operation.modifyRecordsCompletionBlock = { (records, _, error) in
+            if let error = error {
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+                completion(.failure(.ckError(error)))
+            }
+            if records?.count == 0 {
+                print("Record was successfully deleted from iCloud")
+                completion(.success(true))
+            } else {
+                completion(.failure(.unexpectedRecordsFound))
+            }
+        }
+        publicDB.add(operation)
+    }
+}
