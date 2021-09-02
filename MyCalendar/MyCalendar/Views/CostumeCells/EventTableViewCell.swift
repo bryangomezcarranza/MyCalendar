@@ -25,7 +25,12 @@ class EventTableViewCell: UITableViewCell {
     }
     
     func updateViews() {
-        guard let event = event else { return }
+        guard let event = event else {
+            // in the case that event does not exist, clear the text fields
+            titleLabel.text = ""
+            dateLabel.text = ""
+            return
+        }
         titleLabel.text = event.name
         dateLabel.text = event.dueDate.formatDate()
     }
