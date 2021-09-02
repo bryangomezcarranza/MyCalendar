@@ -18,6 +18,9 @@ class EventsViewController: UIViewController {
     var selectedDate = Date()
     var totalSquares = [String]()
     
+    // storage
+    private var eventsByDay: [Date: [Event]] = [:]
+    private var sectionIndex: [Date] = []
     
     
 //MARK: - Lifecycles
@@ -38,7 +41,7 @@ class EventsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.reloadData()
+        updateViews()
     }
     //MARK: - Action
     @IBAction func previousMonth(_ sender: UIButton) {
@@ -105,6 +108,14 @@ class EventsViewController: UIViewController {
     }
     func updateViews() {
         DispatchQueue.main.async {
+            self.eventsByDay = [:]
+            for event in EventController.shared.events {
+                let date = Calendar.current.startOfDay(for: event.dueDate)
+                var events = self.eventsByDay[date] ?? []
+                events.append(event)
+                self.eventsByDay[date] = events
+            }
+            self.sectionIndex = self.eventsByDay.keys.sorted()
             self.tableView.reloadData()
         }
     }
@@ -125,15 +136,47 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
 }
 //MARK: - tableview Delegate & DataSource
 extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.sectionIndex.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard sectionIndex.indices.contains(section) else { return nil }
+        // return the header view here
+        let day = sectionIndex[section]
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        
+        
+        let label = UILabel()
+        label.text = formatter.string(from: day)
+        return label
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return EventController.shared.events.count
+        guard sectionIndex.indices.contains(section) else { return 0 }
+        let day = sectionIndex[section]
+        return eventsByDay[day]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
+        let day = sectionIndex[indexPath.count]
+        
+        guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
+        let event = events[indexPath.row]
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
-        let event = EventController.shared.events[indexPath.row]
+        
         cell.event = event
         return cell
     }
+    
+   
 }
+
+
 
