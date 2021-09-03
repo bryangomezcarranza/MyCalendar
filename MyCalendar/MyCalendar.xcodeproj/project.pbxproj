@@ -14,7 +14,6 @@
 		5B48F9B626DD97150056F2EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B48F9B526DD97150056F2EE /* Assets.xcassets */; };
 		5B48F9B926DD97150056F2EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B48F9B726DD97150056F2EE /* LaunchScreen.storyboard */; };
 		5B48F9C326DD97DE0056F2EE /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B48F9C226DD97DE0056F2EE /* CloudKit.framework */; };
-		5B48F9CB26DDD5F00056F2EE /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48F9CA26DDD5F00056F2EE /* CalendarCollectionViewCell.swift */; };
 		5B48FA0726DEA1120056F2EE /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA0626DEA1120056F2EE /* CalendarHelper.swift */; };
 		5B48FA0926DEAEFF0056F2EE /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA0826DEAEFF0056F2EE /* Event.swift */; };
 		5B48FA0C26DEB4290056F2EE /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA0B26DEB4290056F2EE /* EventController.swift */; };
@@ -22,6 +21,7 @@
 		5B48FA1026DEBC8B0056F2EE /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */; };
 		5B48FA1226DEBD570056F2EE /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA1126DEBD570056F2EE /* DateFormatter.swift */; };
 		5B48FA1426DECA370056F2EE /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA1326DECA370056F2EE /* EventDetailViewController.swift */; };
+		5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B779A9C26E168B8009B05B8 /* DayFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +35,6 @@
 		5B48F9BA26DD97150056F2EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B48F9C026DD97230056F2EE /* MyCalendar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyCalendar.entitlements; sourceTree = "<group>"; };
 		5B48F9C226DD97DE0056F2EE /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		5B48F9CA26DDD5F00056F2EE /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		5B48FA0626DEA1120056F2EE /* CalendarHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHelper.swift; sourceTree = "<group>"; };
 		5B48FA0826DEAEFF0056F2EE /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		5B48FA0B26DEB4290056F2EE /* EventController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
@@ -43,6 +42,7 @@
 		5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		5B48FA1126DEBD570056F2EE /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		5B48FA1326DECA370056F2EE /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
+		5B779A9C26E168B8009B05B8 /* DayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,7 +153,6 @@
 		5B48F9CC26DDD5F40056F2EE /* CostumeCells */ = {
 			isa = PBXGroup;
 			children = (
-				5B48F9CA26DDD5F00056F2EE /* CalendarCollectionViewCell.swift */,
 				5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */,
 			);
 			path = CostumeCells;
@@ -165,6 +164,7 @@
 				5B48FA0626DEA1120056F2EE /* CalendarHelper.swift */,
 				5B48FA0D26DEB6150056F2EE /* EventError.swift */,
 				5B48FA1126DEBD570056F2EE /* DateFormatter.swift */,
+				5B779A9C26E168B8009B05B8 /* DayFormatter.swift */,
 			);
 			path = "Helpers+Extensions";
 			sourceTree = "<group>";
@@ -249,9 +249,9 @@
 			files = (
 				5B48FA1026DEBC8B0056F2EE /* EventTableViewCell.swift in Sources */,
 				5B48FA0726DEA1120056F2EE /* CalendarHelper.swift in Sources */,
-				5B48F9CB26DDD5F00056F2EE /* CalendarCollectionViewCell.swift in Sources */,
 				5B48F9B126DD97130056F2EE /* EventsViewController.swift in Sources */,
 				5B48FA1226DEBD570056F2EE /* DateFormatter.swift in Sources */,
+				5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */,
 				5B48FA0926DEAEFF0056F2EE /* Event.swift in Sources */,
 				5B48F9AD26DD97130056F2EE /* AppDelegate.swift in Sources */,
 				5B48FA0C26DEB4290056F2EE /* EventController.swift in Sources */,

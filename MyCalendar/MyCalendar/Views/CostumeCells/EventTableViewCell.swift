@@ -7,21 +7,30 @@
 
 import UIKit
 
+protocol EventTableViewCellDelegate: AnyObject {
+    func eventCellButtonTapped(isCompleted:Bool, event: Event)
+}
+
 class EventTableViewCell: UITableViewCell {
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var itsCompletedButton: UIButton!
     
     //MARK: - Properties
+    private var isCompleted: Bool = false
+    weak var delegate: EventTableViewCellDelegate?
     
     var event: Event? {
         didSet {
             updateViews()
         }
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
+    //MARK: - Actions
+    @IBAction func hasBeenCompletedButtonTapped(_ sender: Any) {
+        guard let event = event else { return }
+        isCompleted.toggle()
+        delegate?.eventCellButtonTapped(isCompleted: isCompleted, event: event)
     }
     
     func updateViews() {
@@ -32,6 +41,9 @@ class EventTableViewCell: UITableViewCell {
             return
         }
         titleLabel.text = event.name
-        dateLabel.text = event.dueDate.formatDate()
+        dateLabel.text = "Due: \(event.dueDate.formatDate())"
+        
+        let image = isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
+        itsCompletedButton.setImage(image, for: .normal)
     }
 }

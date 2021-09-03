@@ -28,6 +28,9 @@ class EventDetailViewController: UIViewController {
         let date = dueDatePicker.date
         
         if let event = event {
+            event.name = title
+            event.note = note
+            event.dueDate = date
             EventController.shared.updateEvent(event) { result in
                 switch result {
                 

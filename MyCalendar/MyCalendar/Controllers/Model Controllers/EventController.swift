@@ -14,12 +14,6 @@ class EventController {
     let publicDB = CKContainer.default().publicCloudDatabase
     var events = [Event]()
     
-//    var sortedEvents: [[Event]] = []
-//    var earlier = [Event]()
-//    var today = [Event]
-//    var tomorrowEvents
-
-
     
 //MARK: - CRUD
     func createEvent(with name: String, note: String, dueDate: Date, completion: @escaping (Result<Event?, EventError>) -> Void) {
@@ -53,7 +47,7 @@ class EventController {
             print("Events have been fetched successfully.")
             
             let event = records.compactMap { Event(ckRecord: $0) }
-            let sortedContacts = event.sorted(by: { $0.dueDate > $1.dueDate})
+            let sortedContacts = event.sorted(by: { $0.dueDate < $1.dueDate})
             completion(.success(sortedContacts))
         }
     }

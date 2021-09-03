@@ -9,14 +9,12 @@ import UIKit
 
 class EventsViewController: UIViewController {
     //MARK: - Outlets
-    @IBOutlet weak var collectionView: UICollectionView!
+
     @IBOutlet weak var monthLabelButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     //MARK: - Properties
     let searchController = UISearchController(searchResultsController: nil)
-    var selectedDate = Date()
-    var totalSquares = [String]()
     
     // storage
     private var eventsByDay: [Date: [Event]] = [:]
@@ -29,64 +27,25 @@ class EventsViewController: UIViewController {
         loadData()
         searchBar()
         navigationBar()
-        setMonthView()
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
+    
+ 
         tableView.delegate = self
         tableView.dataSource = self
+        
+        tableView.separatorColor = UIColor.systemBlue
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateViews()
+        tableView.reloadData()
     }
     //MARK: - Action
-    @IBAction func previousMonth(_ sender: UIButton) {
-        selectedDate = CalendarHelper().minusMonth(date: selectedDate)
-        setMonthView()
-        
-    }
-    @IBAction func nextMonth(_ sender: UIButton) {
-        selectedDate = CalendarHelper().plusMonth(date: selectedDate)
-        setMonthView()
-    }
+
     
     //MARK: - Helpers
-    func setCellsView() {
-        let width = (collectionView.frame.size.width - 2) / 8
-        let height = (collectionView.frame.size.width - 2) / 8
-        let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        flowLayout.itemSize = CGSize(width: width, height: height)
-    }
-    
-    func setMonthView() {
-        totalSquares.removeAll()
-        
-        let daysInMonth = CalendarHelper().dayOfMonth(date: selectedDate)
-        let firstDayOfMonth = CalendarHelper().firstOfMonth(date: selectedDate)
-        let startingSpaces = CalendarHelper().weekDay(date: firstDayOfMonth)
-        
-        var count: Int = 1
-        
-        while (count <= 42) {
-            if (count <= startingSpaces || count - startingSpaces > daysInMonth) {
-                totalSquares.append("")
-            } else {
-                totalSquares.append(String(count - startingSpaces))
-            }
-            count += 1
-        }
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: CalendarHelper().monthString(date: selectedDate) + " " + (CalendarHelper().dayString(date: selectedDate)) + ", " + CalendarHelper().yearString(date: selectedDate), style: .plain, target: self, action: nil)
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "PingFangSC-Thin", size: 25.0)!,
-                                                                  NSAttributedString.Key.foregroundColor: UIColor.black],
-                                                              for: .normal)
 
-        collectionView.reloadData()
-
-    }
     
     func searchBar() {
         navigationItem.searchController = searchController
@@ -120,20 +79,6 @@ class EventsViewController: UIViewController {
         }
     }
 }
-//MARK: - CollectionView Delegate & DataSource
-extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return totalSquares.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendarCell", for: indexPath) as? CalendarCollectionViewCell else { return UICollectionViewCell() }
-        let dateSelected = totalSquares[indexPath.item]
-        cell.dayOfMonth.text = dateSelected
-        return cell
-        
-    }
-}
 //MARK: - tableview Delegate & DataSource
 extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -143,17 +88,23 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard sectionIndex.indices.contains(section) else { return nil }
+        
         // return the header view here
         let day = sectionIndex[section]
-        
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
         
         let label = UILabel()
-        label.text = formatter.string(from: day)
-        return label
+        label.text = day.formatDay()
+        label.font = UIFont(name: "PingFangSC-Thin", size: 17.0)
+        label.frame = CGRect(x: 32, y: 0, width: 100, height: 35)
+        view.addSubview(label)
+        
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 32
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -163,20 +114,65 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
-        let day = sectionIndex[indexPath.count]
+//        guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
+//        let day = sectionIndex[indexPath.section]
+//
+//        guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
+//        let event = events[indexPath.row]
         
-        guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
-        let event = events[indexPath.row]
+        let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
         
         cell.event = event
+        
+        // CostumeSeperator
+        cell.separatorInset.left = 32
+        
         return cell
+      
     }
     
-   
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            
+            let eventToDelete = EventController.shared.events[indexPath.row]
+//            let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+            
+            guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else { return }
+            
+            EventController.shared.delete(eventToDelete) { result in
+                switch result {
+                
+                case .success( let bool ):
+                    if bool == true {
+                        EventController.shared.events.remove(at: index)
+                        DispatchQueue.main.async {
+                            // Delete row that was selected.
+                            self.sectionIndex.remove(at: indexPath.row)
+                            tableView.deleteRows(at: [indexPath], with: .fade)
+                        }
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 84
+    }
+     //MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToEventDetail" {
+            guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailViewController else { return }
+            let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+            destinationVC.event = event
+        }
+    }
 }
-
 
 
