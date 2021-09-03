@@ -114,17 +114,18 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
-//        let day = sectionIndex[indexPath.section]
-//
-//        guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
-//        let event = events[indexPath.row]
+        guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
+        let day = sectionIndex[indexPath.section]
+
+        guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
+        let event = events[indexPath.row]
         
-        let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+        //let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
         
         cell.event = event
+        cell.delegate = self
         
         // CostumeSeperator
         cell.separatorInset.left = 32
@@ -137,10 +138,9 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             
             
-            let eventToDelete = EventController.shared.events[indexPath.row]
-//            let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+            let eventToDelete = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
             
-            guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else { return }
+            guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else  { return }
             
             EventController.shared.delete(eventToDelete) { result in
                 switch result {
@@ -150,8 +150,8 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
                         EventController.shared.events.remove(at: index)
                         DispatchQueue.main.async {
                             // Delete row that was selected.
-                            self.sectionIndex.remove(at: indexPath.row)
-                            tableView.deleteRows(at: [indexPath], with: .fade)
+                            self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
+                            self.updateViews()
                         }
                     }
                 case .failure(let error):
@@ -173,6 +173,17 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
             destinationVC.event = event
         }
     }
+}
+//MARK: - isCompletedDelegate Extension
+extension EventsViewController: EventTableViewCellDelegate {
+    func eventCellButtonTapped(_ sender: EventTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: sender) else { return }
+        let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+        event.isCompleted.toggle()
+        tableView.reloadData()
+    }
+    
+ 
 }
 
 

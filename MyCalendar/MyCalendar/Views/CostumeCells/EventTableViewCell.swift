@@ -8,7 +8,7 @@
 import UIKit
 
 protocol EventTableViewCellDelegate: AnyObject {
-    func eventCellButtonTapped(isCompleted:Bool, event: Event)
+    func eventCellButtonTapped(_ sender: EventTableViewCell)
 }
 
 class EventTableViewCell: UITableViewCell {
@@ -18,7 +18,7 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var itsCompletedButton: UIButton!
     
     //MARK: - Properties
-    private var isCompleted: Bool = false
+   // private var isCompleted: Bool = false
     weak var delegate: EventTableViewCellDelegate?
     
     var event: Event? {
@@ -28,9 +28,9 @@ class EventTableViewCell: UITableViewCell {
     }
     //MARK: - Actions
     @IBAction func hasBeenCompletedButtonTapped(_ sender: Any) {
-        guard let event = event else { return }
-        isCompleted.toggle()
-        delegate?.eventCellButtonTapped(isCompleted: isCompleted, event: event)
+        delegate?.eventCellButtonTapped(self)
+        print("buttonRapped")
+            
     }
     
     func updateViews() {
@@ -42,8 +42,9 @@ class EventTableViewCell: UITableViewCell {
         }
         titleLabel.text = event.name
         dateLabel.text = "Due: \(event.dueDate.formatDate())"
+       
         
-        let image = isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
+        let image = event.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
         itsCompletedButton.setImage(image, for: .normal)
     }
 }

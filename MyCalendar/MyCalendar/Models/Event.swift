@@ -20,13 +20,15 @@ class Event {
     var name: String
     var note: String
     var dueDate: Date
+    var isCompleted: Bool
     var reminderDate: Date
     var recordID: CKRecord.ID
     
-    init(name: String, note: String, dueDate: Date = Date(), reminderDate: Date = Date(), recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString) ) {
+    init(name: String, note: String, dueDate: Date = Date(), isCompleted: Bool = false, reminderDate: Date = Date(), recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString) ) {
         self.name = name
         self.note = note
         self.dueDate = dueDate
+        self.isCompleted = isCompleted
         self.reminderDate = reminderDate
         self.recordID = recordID
     }
