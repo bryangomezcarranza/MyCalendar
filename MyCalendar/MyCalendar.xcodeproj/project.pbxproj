@@ -20,8 +20,11 @@
 		5B48FA0E26DEB6150056F2EE /* EventError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA0D26DEB6150056F2EE /* EventError.swift */; };
 		5B48FA1026DEBC8B0056F2EE /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */; };
 		5B48FA1226DEBD570056F2EE /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA1126DEBD570056F2EE /* DateFormatter.swift */; };
-		5B48FA1426DECA370056F2EE /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48FA1326DECA370056F2EE /* EventDetailViewController.swift */; };
 		5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B779A9C26E168B8009B05B8 /* DayFormatter.swift */; };
+		5BB7258126E30D64003C997E /* EventDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */; };
+		5BB7258526E53974003C997E /* DueDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258426E53974003C997E /* DueDateTableViewCell.swift */; };
+		5BB7258726E543EB003C997E /* StringDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258626E543EB003C997E /* StringDateFormatter.swift */; };
+		5BB7258B26E80C26003C997E /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258A26E80C26003C997E /* LocationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,8 +44,11 @@
 		5B48FA0D26DEB6150056F2EE /* EventError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventError.swift; sourceTree = "<group>"; };
 		5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		5B48FA1126DEBD570056F2EE /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
-		5B48FA1326DECA370056F2EE /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		5B779A9C26E168B8009B05B8 /* DayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFormatter.swift; sourceTree = "<group>"; };
+		5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailTableViewController.swift; sourceTree = "<group>"; };
+		5BB7258426E53974003C997E /* DueDateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DueDateTableViewCell.swift; sourceTree = "<group>"; };
+		5BB7258626E543EB003C997E /* StringDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDateFormatter.swift; sourceTree = "<group>"; };
+		5BB7258A26E80C26003C997E /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,7 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				5B48F9B026DD97130056F2EE /* EventsViewController.swift */,
-				5B48FA1326DECA370056F2EE /* EventDetailViewController.swift */,
+				5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */,
+				5BB7258A26E80C26003C997E /* LocationViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -154,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */,
+				5BB7258426E53974003C997E /* DueDateTableViewCell.swift */,
 			);
 			path = CostumeCells;
 			sourceTree = "<group>";
@@ -165,6 +173,7 @@
 				5B48FA0D26DEB6150056F2EE /* EventError.swift */,
 				5B48FA1126DEBD570056F2EE /* DateFormatter.swift */,
 				5B779A9C26E168B8009B05B8 /* DayFormatter.swift */,
+				5BB7258626E543EB003C997E /* StringDateFormatter.swift */,
 			);
 			path = "Helpers+Extensions";
 			sourceTree = "<group>";
@@ -247,16 +256,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BB7258B26E80C26003C997E /* LocationViewController.swift in Sources */,
 				5B48FA1026DEBC8B0056F2EE /* EventTableViewCell.swift in Sources */,
+				5BB7258726E543EB003C997E /* StringDateFormatter.swift in Sources */,
 				5B48FA0726DEA1120056F2EE /* CalendarHelper.swift in Sources */,
 				5B48F9B126DD97130056F2EE /* EventsViewController.swift in Sources */,
+				5BB7258126E30D64003C997E /* EventDetailTableViewController.swift in Sources */,
 				5B48FA1226DEBD570056F2EE /* DateFormatter.swift in Sources */,
 				5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */,
 				5B48FA0926DEAEFF0056F2EE /* Event.swift in Sources */,
 				5B48F9AD26DD97130056F2EE /* AppDelegate.swift in Sources */,
 				5B48FA0C26DEB4290056F2EE /* EventController.swift in Sources */,
+				5BB7258526E53974003C997E /* DueDateTableViewCell.swift in Sources */,
 				5B48FA0E26DEB6150056F2EE /* EventError.swift in Sources */,
-				5B48FA1426DECA370056F2EE /* EventDetailViewController.swift in Sources */,
 				5B48F9AF26DD97130056F2EE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

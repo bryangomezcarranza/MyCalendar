@@ -13,7 +13,9 @@ struct EventStrings {
     fileprivate static let nameKey = "name"
     fileprivate static let noteKey = "note"
     fileprivate static let dueDateKey = "dueDate"
+    fileprivate static let isCompletedKey = "isCompleted"
     fileprivate static let reminderDateKey = "reminderKey"
+    fileprivate static let locationKey = "location"
 }
 
 class Event {
@@ -22,14 +24,16 @@ class Event {
     var dueDate: Date
     var isCompleted: Bool
     var reminderDate: Date
+    var location: String
     var recordID: CKRecord.ID
     
-    init(name: String, note: String, dueDate: Date = Date(), isCompleted: Bool = false, reminderDate: Date = Date(), recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString) ) {
+    init(name: String, note: String, dueDate: Date = Date(), isCompleted: Bool = false, reminderDate: Date = Date(), location: String, recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString) ) {
         self.name = name
         self.note = note
         self.dueDate = dueDate
         self.isCompleted = isCompleted
         self.reminderDate = reminderDate
+        self.location = location
         self.recordID = recordID
     }
 }
@@ -38,9 +42,11 @@ extension Event {
     convenience init?(ckRecord: CKRecord) {
         guard let name = ckRecord[EventStrings.nameKey] as? String,
               let note = ckRecord[EventStrings.noteKey] as? String,
-              let dueDate = ckRecord[EventStrings.dueDateKey] as? Date else { return nil }
+              let dueDate = ckRecord[EventStrings.dueDateKey] as? Date,
+              let isCompleted = ckRecord[EventStrings.isCompletedKey] as? Bool,
+              let location = ckRecord[EventStrings.locationKey] as? String else { return nil }
         
-        self.init(name: name, note: note, dueDate: dueDate, recordID: ckRecord.recordID)
+        self.init(name: name, note: note, dueDate: dueDate, isCompleted: isCompleted, location: location, recordID: ckRecord.recordID)
     }
 }
 
@@ -51,7 +57,9 @@ extension CKRecord {
         self.setValuesForKeys([
             EventStrings.nameKey : event.name,
             EventStrings.noteKey : event.note,
-            EventStrings.dueDateKey : event.dueDate
+            EventStrings.dueDateKey : event.dueDate,
+            EventStrings.isCompletedKey : event.isCompleted,
+            EventStrings.locationKey : event.location
         ])
     }
 }

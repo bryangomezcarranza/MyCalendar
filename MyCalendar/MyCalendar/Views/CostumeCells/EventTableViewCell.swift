@@ -18,7 +18,6 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var itsCompletedButton: UIButton!
     
     //MARK: - Properties
-   // private var isCompleted: Bool = false
     weak var delegate: EventTableViewCellDelegate?
     
     var event: Event? {

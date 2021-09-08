@@ -16,8 +16,8 @@ class EventController {
     
     
 //MARK: - CRUD
-    func createEvent(with name: String, note: String, dueDate: Date, completion: @escaping (Result<Event?, EventError>) -> Void) {
-        let newEvent = Event(name: name, note: note, dueDate: dueDate)
+    func createEvent(with name: String, note: String, dueDate: Date, location: String, completion: @escaping (Result<Event?, EventError>) -> Void) {
+        let newEvent = Event(name: name, note: note, dueDate: dueDate, location: location)
         let record = CKRecord(event: newEvent)
 
         

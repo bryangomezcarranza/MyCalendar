@@ -114,13 +114,15 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let row = [indexPath.row]
+        
         guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
         let day = sectionIndex[indexPath.section]
 
         guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
         let event = events[indexPath.row]
         
-        //let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
         
@@ -128,8 +130,25 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         
         // CostumeSeperator
-        cell.separatorInset.left = 32
         
+        if (row.count == 1 && row.count < 1) {
+            cell.layer.borderColor = UIColor.systemBlue.cgColor
+            cell.layer.borderWidth = 0.5
+        } else if (row.count == 1 && row.count > 1) {
+            cell.separatorInset.left = 32
+        }
+        
+        
+//        if (row!.count == 1 && row!.count < 1){
+//            cell.layer.borderColor = UIColor.systemBlue.cgColor
+//            cell.layer.borderWidth = 0.5
+//        } else if (row!.count == 1 && row!.count > 1) {
+//            cell.separatorInset.left = 32
+//        } else {
+//            cell.separatorInset.left = 32
+//        }
+
+        //cell.separatorInset.left = 32
         return cell
       
     }
@@ -168,7 +187,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
      //MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToEventDetail" {
-            guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailViewController else { return }
+            guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailTableViewController else { return }
             let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
             destinationVC.event = event
         }
