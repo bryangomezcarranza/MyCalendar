@@ -86,18 +86,6 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         return self.sectionIndex.count
     }
     
-//    private func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) -> UIColor! {
-//
-//        let todayDate = Date().formatDay()
-//
-//        if sectionIndex.contains(todayDate.toDate()) {
-//            return  UIColor.systemBlue
-//        } else {
-//            return UIColor.black
-//        }
-//    }
-  
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         guard sectionIndex.indices.contains(section) else { return nil }
