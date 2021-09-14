@@ -9,9 +9,11 @@ import UIKit
 
 class EventsViewController: UIViewController {
     //MARK: - Outlets
-
     @IBOutlet weak var monthLabelButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var noEventsView: UIView!
+    @IBOutlet weak var noEventsLabel: UILabel!
+    @IBOutlet weak var newEventButton: UIButton!
     
     //MARK: - Properties
     let searchController = UISearchController(searchResultsController: nil)
@@ -20,20 +22,18 @@ class EventsViewController: UIViewController {
     private var eventsByDay: [Date: [Event]] = [:]
     private var sectionIndex: [Date] = []
     
-    
-//MARK: - Lifecycles
+    //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
         searchBar()
         navigationBar()
-    
- 
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
-        
         tableView.separatorColor = UIColor.systemBlue
-        
+        tableView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -41,15 +41,13 @@ class EventsViewController: UIViewController {
         updateViews()
         tableView.reloadData()
     }
-    //MARK: - Action
-
     
     //MARK: - Helpers
-
-    
     func searchBar() {
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
+    
     func navigationBar() {
         navigationController?.navigationBar.backgroundColor = UIColor.white
     }
@@ -65,6 +63,7 @@ class EventsViewController: UIViewController {
             }
         }
     }
+    
     func updateViews() {
         DispatchQueue.main.async {
             self.eventsByDay = [:]
@@ -79,6 +78,7 @@ class EventsViewController: UIViewController {
         }
     }
 }
+
 //MARK: - tableview Delegate & DataSource
 extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -86,19 +86,45 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         return self.sectionIndex.count
     }
     
+//    private func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) -> UIColor! {
+//
+//        let todayDate = Date().formatDay()
+//
+//        if sectionIndex.contains(todayDate.toDate()) {
+//            return  UIColor.systemBlue
+//        } else {
+//            return UIColor.black
+//        }
+//    }
+  
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         guard sectionIndex.indices.contains(section) else { return nil }
         
         // return the header view here
         let day = sectionIndex[section]
+        
         let view = UIView()
         view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
         
         let label = UILabel()
         label.text = day.formatDay()
-        label.font = UIFont(name: "PingFangSC-Thin", size: 17.0)
-        label.frame = CGRect(x: 32, y: 0, width: 100, height: 35)
+        label.font = UIFont(name: "PingFangSC-Thin", size: 15.0)
+        label.frame = CGRect(x: 32, y: 0, width: 300, height: 35)
         view.addSubview(label)
+        
+        // Color Sectioning based on Todays Date.
+        
+        if day.formatDay() == Date().formatDay() {
+            label.textColor = UIColor.systemBlue
+            label.text = "Today, \(day.formatDay())"
+        } else if day.formatDay() < Date().formatDay() {
+            label.textColor = UIColor.red
+            label.text = "Past Due - \(day.formatDay())"
+        } else {
+            label.textColor = UIColor.black
+        }
         
         return view
     }
@@ -110,7 +136,15 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard sectionIndex.indices.contains(section) else { return 0 }
         let day = sectionIndex[section]
+        
+        // No Events View
+        if eventsByDay[day]?.count == 0 {
+            self.tableView.isHidden = true
+        } else {
+            self.tableView.isHidden = false
+        }
         return eventsByDay[day]?.count ?? 0
+          
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,7 +153,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
         let day = sectionIndex[indexPath.section]
-
+        
         guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
         let event = events[indexPath.row]
         
@@ -129,33 +163,20 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.event = event
         cell.delegate = self
         
-        // CostumeSeperator
-        
+        // Costume Seperator
+    
         if (row.count == 1 && row.count < 1) {
             cell.layer.borderColor = UIColor.systemBlue.cgColor
             cell.layer.borderWidth = 0.5
         } else if (row.count == 1 && row.count > 1) {
             cell.separatorInset.left = 32
         }
-        
-        
-//        if (row!.count == 1 && row!.count < 1){
-//            cell.layer.borderColor = UIColor.systemBlue.cgColor
-//            cell.layer.borderWidth = 0.5
-//        } else if (row!.count == 1 && row!.count > 1) {
-//            cell.separatorInset.left = 32
-//        } else {
-//            cell.separatorInset.left = 32
-//        }
 
-        //cell.separatorInset.left = 32
         return cell
-      
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
             
             let eventToDelete = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
             
@@ -184,7 +205,8 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
     }
-     //MARK: - Navigation
+    
+    //MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToEventDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailTableViewController else { return }
@@ -200,9 +222,7 @@ extension EventsViewController: EventTableViewCellDelegate {
         let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
         event.isCompleted.toggle()
         tableView.reloadData()
-    }
-    
- 
+    } 
 }
 
 

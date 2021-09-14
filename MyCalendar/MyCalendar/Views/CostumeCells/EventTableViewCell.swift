@@ -40,7 +40,7 @@ class EventTableViewCell: UITableViewCell {
             return
         }
         titleLabel.text = event.name
-        dateLabel.text = "Due: \(event.dueDate.formatDate())"
+        dateLabel.text = "Due at \(event.dueDate.formatDate())"
        
         
         let image = event.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")

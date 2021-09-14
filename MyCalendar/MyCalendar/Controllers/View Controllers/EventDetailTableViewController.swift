@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import MapKit
+
 
 class EventDetailTableViewController: UITableViewController {
 
@@ -13,18 +15,19 @@ class EventDetailTableViewController: UITableViewController {
     var event: Event?
     var date: Date?
     
+    
     //MARK: - Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var noteTextField: UITextField!
     @IBOutlet weak var dueDatePicker: UIDatePicker!
     @IBOutlet weak var locationTextField: UITextField!
     
+    //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
-
-        
     }
+    
     //MARK: - Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         guard let title = titleTextField.text, !title.isEmpty, let note = noteTextField.text, !note.isEmpty, let location = locationTextField.text  else { return }
@@ -60,6 +63,7 @@ class EventDetailTableViewController: UITableViewController {
         }
         navigationController?.popViewController(animated: true)
     }
+    
     @IBAction func dueDatePickerChanged(_ sender: Any) {
         guard let date = date else { return }
         dueDatePicker.date = date
@@ -74,21 +78,18 @@ class EventDetailTableViewController: UITableViewController {
         locationTextField.text = event.location
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToLocation" {
-            guard let vc = segue.destination as? LocationViewController else { return }
-            vc.delegate = self 
+        if segue.identifier == "goToLocationView" {
+            guard let destinationVC = segue.destination as? LocationTableViewController else { return }
+            destinationVC.delegate = self
         }
     }
 }
 
-
-
-extension EventDetailTableViewController: LocationPinSavedDelegate {
-    func savedLocationButtonTapped(location: String) {
-        locationTextField.text = location
-    }
+//MARK: -
+extension EventDetailTableViewController: UpdateLocationProtocol {
+    func updateLocation(with location: MKLocalSearchCompletion) {
+        locationTextField.text = location.subtitle
+    }  
 }
-
 
