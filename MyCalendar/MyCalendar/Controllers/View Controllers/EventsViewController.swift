@@ -16,7 +16,20 @@ class EventsViewController: UIViewController {
     @IBOutlet weak var newEventButton: UIButton!
     
     //MARK: - Properties
-    let searchController = UISearchController(searchResultsController: nil)
+    
+    var refresh = UIRefreshControl()
+    
+    //Search Bar
+    var searchedEvents = [Date: [Event]]()
+    var searchController = UISearchController(searchResultsController: nil)
+    var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    var isFiltering: Bool {
+        return searchController.isActive && !isSearchBarEmpty
+    }
+    
     
     // storage
     private var eventsByDay: [Date: [Event]] = [:]
@@ -26,8 +39,9 @@ class EventsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadData()
-        searchBar()
+        searchBarSetUp()
         navigationBar()
+        refreshSetUp()
         
         
         tableView.delegate = self
@@ -39,12 +53,22 @@ class EventsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateViews()
-        tableView.reloadData()
+        //self.tableView.reloadData()
     }
     
     //MARK: - Helpers
-    func searchBar() {
+    func refreshSetUp() {
+        refresh.attributedTitle = NSAttributedString(string: "Pull down to refresh")
+        refresh.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        tableView.addSubview(refresh)
+    }
+    func searchBarSetUp() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search your events"
+        searchController.searchBar.returnKeyType = .go
         navigationItem.searchController = searchController
+        definesPresentationContext = true
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
@@ -52,7 +76,7 @@ class EventsViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = UIColor.white
     }
     
-    func loadData() {
+    @objc func loadData() {
         EventController.shared.fetchEvent { result in
             switch result {
             case .success(let event):
@@ -68,15 +92,25 @@ class EventsViewController: UIViewController {
         DispatchQueue.main.async {
             self.eventsByDay = [:]
             for event in EventController.shared.events {
-                let date = Calendar.current.startOfDay(for: event.dueDate)
+                let date = Calendar.current.startOfDay(for: event.dueDate)// makes todays date the due date.
                 var events = self.eventsByDay[date] ?? []
                 events.append(event)
                 self.eventsByDay[date] = events
             }
             self.sectionIndex = self.eventsByDay.keys.sorted()
             self.tableView.reloadData()
+            self.refresh.endRefreshing()
         }
     }
+    
+    func filterContent(searchText: String) {
+        if searchText.count > 0 {
+            //searchedEvents = eventsByDay.filter(<#T##isIncluded: (Dictionary<Date, [Event]>.Element) throws -> Bool##(Dictionary<Date, [Event]>.Element) throws -> Bool#>)
+            
+        }
+        self.tableView.reloadData()
+    }
+
 }
 
 //MARK: - tableview Delegate & DataSource
@@ -131,8 +165,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             self.tableView.isHidden = false
         }
-        return eventsByDay[day]?.count ?? 0
-          
+        return  isFiltering ? searchedEvents.count : eventsByDay[day]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -212,5 +245,30 @@ extension EventsViewController: EventTableViewCellDelegate {
         tableView.reloadData()
     } 
 }
+
+//MARK: - SearchBar Delegate & ResultUpdating
+
+extension EventsViewController: UISearchBarDelegate, UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        filterContent(searchText: searchBar.text!)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.tableView.reloadData()
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
+}
+
 
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class SettingsTableViewController: UITableViewController {
 
@@ -13,9 +14,30 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
 
     }
+    //MARK: - Private Functions
+    private func shareSheetTapped() {
+        let textToShare = "Keep track of your events and task with (Name). An App that will help you stay organized!"
+        guard let url = URL(string: "https://apps.apple.com/us/app/pixel-starships/id321756558") else { return }
+        let objectsToShare = UIActivityViewController(activityItems: [textToShare, url], applicationActivities: nil)
+        present(objectsToShare, animated: true)
+    }
+    
+    private func showMailComposer() {
+        guard MFMailComposeViewController.canSendMail() else {
+            // Show alert informing the user
+            return
+        }
+        
+        let composer = MFMailComposeViewController()
+        composer.mailComposeDelegate = self
+        composer.setToRecipients(["bryandionizio@gmail.com"])
+        composer.setSubject("(AppName) email support (iPhone)")
+        composer.setMessageBody("I love your app but.... ", isHTML: false)
+        
+        present(composer, animated: true)
+    }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 3
@@ -28,6 +50,35 @@ class SettingsTableViewController: UITableViewController {
             return 4
         } else {
             return 4
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+       
+        let section = indexPath.section, row = indexPath.row
+        
+        if (section == 1) {
+            if row == 1 {
+                if let url = URL(string: "https://www.instagram.com/bryan_iosdev/") {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            if row == 3 {
+                if  let url = URL(string: "https://apps.apple.com/us/app/pixel-starships/id321756558") {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            if row == 2 {
+                shareSheetTapped()
+            }
+            
+        } else if (section == 2) {
+            if row == 2 {
+                showMailComposer()
+            }
         }
     }
     //MARK: - Header and Footer layout functions.
@@ -56,4 +107,30 @@ class SettingsTableViewController: UITableViewController {
         return 56 
     }
     
+}
+
+//MARK: - Section Heading
+
+extension SettingsTableViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        if let _ = error {
+            // Show error alert
+            controller.dismiss(animated: true)
+            return
+        }
+        
+        switch result {
+        case .cancelled:
+            print("Cancelled")
+        case .saved:
+            print("Saved")
+        case .sent:
+            print("Email sent")
+        case .failed:
+            print("Failed to send")
+        @unknown default:
+            break
+        }
+        controller.dismiss(animated: true)
+    }
 }
