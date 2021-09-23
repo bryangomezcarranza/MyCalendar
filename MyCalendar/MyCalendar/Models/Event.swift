@@ -14,7 +14,7 @@ struct EventStrings {
     fileprivate static let noteKey = "note"
     fileprivate static let dueDateKey = "dueDate"
     fileprivate static let isCompletedKey = "isCompleted"
-    fileprivate static let reminderDateKey = "reminderKey"
+    fileprivate static let reminderDateKey = "reminderDate"
     fileprivate static let locationKey = "location"
 }
 
@@ -27,7 +27,7 @@ class Event {
     var location: String
     var recordID: CKRecord.ID
     
-    init(name: String, note: String, dueDate: Date = Date(), isCompleted: Bool = false, reminderDate: Date = Date(), location: String, recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString) ) {
+    init(name: String, note: String, dueDate: Date = Date(), isCompleted: Bool = false, reminderDate: Date = Date(), location: String, recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString)) {
         self.name = name
         self.note = note
         self.dueDate = dueDate
@@ -44,9 +44,10 @@ extension Event {
               let note = ckRecord[EventStrings.noteKey] as? String,
               let dueDate = ckRecord[EventStrings.dueDateKey] as? Date,
               let isCompleted = ckRecord[EventStrings.isCompletedKey] as? Bool,
+              let reminderDate = ckRecord[EventStrings.reminderDateKey] as? Date,
               let location = ckRecord[EventStrings.locationKey] as? String else { return nil }
         
-        self.init(name: name, note: note, dueDate: dueDate, isCompleted: isCompleted, location: location, recordID: ckRecord.recordID)
+        self.init(name: name, note: note, dueDate: dueDate, isCompleted: isCompleted, reminderDate: reminderDate, location: location, recordID: ckRecord.recordID)
     }
 }
 
@@ -59,6 +60,7 @@ extension CKRecord {
             EventStrings.noteKey : event.note,
             EventStrings.dueDateKey : event.dueDate,
             EventStrings.isCompletedKey : event.isCompleted,
+            EventStrings.reminderDateKey : event.reminderDate,
             EventStrings.locationKey : event.location
         ])
     }

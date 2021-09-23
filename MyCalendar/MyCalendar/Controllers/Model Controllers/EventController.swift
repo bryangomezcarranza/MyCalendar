@@ -10,14 +10,15 @@ import CloudKit
 
 class EventController {
     static let shared = EventController()
+    let notificcationScheduler = NotificationScheduler()
 
     let publicDB = CKContainer.default().publicCloudDatabase
     var events = [Event]()
     
     
 //MARK: - CRUD
-    func createEvent(with name: String, note: String, dueDate: Date, location: String, completion: @escaping (Result<Event?, EventError>) -> Void) {
-        let newEvent = Event(name: name, note: note, dueDate: dueDate, location: location)
+    func createEvent(with name: String, note: String, dueDate: Date, reminderDate: Date, location: String, completion: @escaping (Result<Event?, EventError>) -> Void) {
+        let newEvent = Event(name: name, note: note, dueDate: dueDate, reminderDate: reminderDate, location: location)
         let record = CKRecord(event: newEvent)
 
         
@@ -27,10 +28,12 @@ class EventController {
                completion(.failure(.ckError(error)))
             }
             guard let record = record,
-                  let savedContact = Event(ckRecord: record) else { return completion(.failure(.couldNotUnwrap))}
-            print("Saved a contact successfully with id: \(savedContact.recordID)")
-            completion(.success(savedContact))
+                  let savedEvent = Event(ckRecord: record) else { return completion(.failure(.couldNotUnwrap))}
+            print("Saved a contact successfully with id: \(savedEvent.recordID)")
+            completion(.success(savedEvent))
         }
+        
+        notificcationScheduler.scheduleNotification(for: newEvent)
     }
     
     func fetchEvent(completion: @escaping (Result<[Event], EventError>) -> Void) {
@@ -69,6 +72,8 @@ class EventController {
             completion(.success(updateEvent))
         }
         publicDB.add(operation)
+        
+        notificcationScheduler.scheduleNotification(for: event)
     }
     
     func delete(_ event: Event, completion: @escaping (Result<Bool, EventError>) -> Void) {
@@ -87,5 +92,7 @@ class EventController {
             }
         }
         publicDB.add(operation)
+        
+        notificcationScheduler.clearNotifications(for: event)
     }
 }

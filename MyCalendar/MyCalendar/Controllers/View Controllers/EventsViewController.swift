@@ -40,6 +40,10 @@ class EventsViewController: UIViewController {
         super.viewDidLoad()
         loadData()
         searchBarSetUp()
+        
+        // Setting Obvservers
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(UIApplication.didBecomeActiveNotification.rawValue), object: nil) // reloads data when scene becomes active.
+//        NotificationCenter.default.addObserver(self, selector: #selector(reminderFired), name: NSNotification.Name(StringConstants.reminderReceivedNotificationName), object: nil)
         navigationBar()
         refreshSetUp()
         
@@ -57,6 +61,31 @@ class EventsViewController: UIViewController {
     }
     
     //MARK: - Helpers
+    
+    // what you want to happen when youre inside this obverver/view
+//    @objc private func reminderFired() {
+//       view.backgroundColor = .systemRed
+//       tableView.backgroundColor = .systemRed
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // want this on the main treath so ther is no interoption or waiting.
+//            self.view.backgroundColor = .systemBackground
+//            self.tableView.backgroundColor = .systemBackground
+//        }
+//    }
+    
+    @objc private func reloadView() {
+        EventController.shared.fetchEvent { result in
+            switch result {
+            case .success(let event):
+                EventController.shared.events = event
+                self.updateViews()
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
+            }
+        }
+        self.tableView.reloadData()
+    }
+
     func refreshSetUp() {
         refresh.attributedTitle = NSAttributedString(string: "Pull down to refresh")
         refresh.addTarget(self, action: #selector(loadData), for: .valueChanged)
@@ -105,8 +134,9 @@ class EventsViewController: UIViewController {
     
     func filterContent(searchText: String) {
         if searchText.count > 0 {
-            //searchedEvents = eventsByDay.filter(<#T##isIncluded: (Dictionary<Date, [Event]>.Element) throws -> Bool##(Dictionary<Date, [Event]>.Element) throws -> Bool#>)
-            
+//            searchedEvents = eventsByDay.filter({ (key: Date, value: [Event]) in
+//                <#code#>
+//            })
         }
         self.tableView.reloadData()
     }

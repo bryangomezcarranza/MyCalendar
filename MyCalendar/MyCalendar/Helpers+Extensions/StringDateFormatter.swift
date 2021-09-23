@@ -8,10 +8,11 @@
 import Foundation
 
 extension String {
-    func toDate(withFormat format: String = "MM/dd/yyyy,  h:mm a" ) -> Date {
+    func toDate(withFormat format: String = "MMM d, yyyy  h:mm a" ) -> Date {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = format
-    dateFormatter.dateStyle = .short
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .short
     guard let date = dateFormatter.date(from: self) else {
       preconditionFailure("Take a look to your format")
     }

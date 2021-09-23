@@ -12,6 +12,8 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       
 
     }
     //MARK: - Private Functions
@@ -49,7 +51,7 @@ class SettingsTableViewController: UITableViewController {
         } else if section == 1 {
             return 4
         } else {
-            return 4
+            return 3
         }
     }
     
@@ -92,7 +94,11 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 40
+        if section == 2 {
+            return 0
+        } else {
+            return 40
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
