@@ -20,6 +20,7 @@ class EventsViewController: UIViewController {
     var refresh = UIRefreshControl()
     
     //Search Bar
+    
     var searchedEvents = [Date: [Event]]()
     var searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
@@ -28,6 +29,23 @@ class EventsViewController: UIViewController {
     
     var isFiltering: Bool {
         return searchController.isActive && !isSearchBarEmpty
+    }
+    
+    var dataSource: [Date: [Event]] { //
+        if isSearchBarEmpty {
+           return  eventsByDay // all of them
+        } else {
+            return searchedEvents // filtered stuff
+        }
+    }
+    
+    var dataSourceIndex: [Date] {
+        if isSearchBarEmpty {
+            return sectionIndex
+        } else {
+            return searchedEvents.keys.sorted()
+        }
+        
     }
     
     
@@ -66,14 +84,14 @@ class EventsViewController: UIViewController {
 //    @objc private func reminderFired() {
 //       view.backgroundColor = .systemRed
 //       tableView.backgroundColor = .systemRed
-//        
+//
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // want this on the main treath so ther is no interoption or waiting.
 //            self.view.backgroundColor = .systemBackground
 //            self.tableView.backgroundColor = .systemBackground
 //        }
 //    }
     
-    @objc private func reloadView() {
+    private func reloadView() {
         EventController.shared.fetchEvent { result in
             switch result {
             case .success(let event):
@@ -133,29 +151,32 @@ class EventsViewController: UIViewController {
     }
     
     func filterContent(searchText: String) {
-        if searchText.count > 0 {
-//            searchedEvents = eventsByDay.filter({ (key: Date, value: [Event]) in
-//                <#code#>
-//            })
+        searchedEvents =  [:]
+        for (key, value) in eventsByDay {
+            let filtered = value.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            
+            if !filtered.isEmpty { // checks to see if there is anything left over. If not empy, we will display.
+                searchedEvents[key] = filtered
+            }
         }
+        
         self.tableView.reloadData()
     }
-
 }
 
 //MARK: - tableview Delegate & DataSource
 extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sectionIndex.count
+        return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        guard sectionIndex.indices.contains(section) else { return nil }
+        guard dataSourceIndex.indices.contains(section) else { return nil }
         
         // return the header view here
-        let day = sectionIndex[section]
+        let day = dataSourceIndex[section]
         
         let view = UIView()
         view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
@@ -186,8 +207,8 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard sectionIndex.indices.contains(section) else { return 0 }
-        let day = sectionIndex[section]
+        guard dataSourceIndex.indices.contains(section) else { return 0 }
+        let day = dataSourceIndex[section]
         
         // No Events View
         if eventsByDay[day]?.count == 0 {
@@ -195,17 +216,19 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             self.tableView.isHidden = false
         }
-        return  isFiltering ? searchedEvents.count : eventsByDay[day]?.count ?? 0
+        return dataSource[day]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = [indexPath.row]
         
-        guard sectionIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
-        let day = sectionIndex[indexPath.section]
+        guard dataSourceIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
+        let day = dataSourceIndex[indexPath.section]
         
-        guard let events = eventsByDay[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
+        guard let events = dataSource[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
+        
+        
         let event = events[indexPath.row]
         
         
@@ -229,7 +252,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            let eventToDelete = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+            let eventToDelete = dataSource[dataSourceIndex[indexPath.section]]![indexPath.row]
             
             guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else  { return }
             
@@ -241,7 +264,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
                         EventController.shared.events.remove(at: index)
                         DispatchQueue.main.async {
                             // Delete row that was selected.
-                            self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
+                            //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
                             self.updateViews()
                         }
                     }
@@ -249,7 +272,6 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
                     print(error.localizedDescription)
                 }
             }
-            
         }
     }
     
@@ -261,7 +283,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToEventDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailTableViewController else { return }
-            let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
+            let event = dataSource[dataSourceIndex[indexPath.section]]![indexPath.row]
             destinationVC.event = event
         }
     }
@@ -273,6 +295,7 @@ extension EventsViewController: EventTableViewCellDelegate {
         let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
         event.isCompleted.toggle()
         tableView.reloadData()
+        
     } 
 }
 
