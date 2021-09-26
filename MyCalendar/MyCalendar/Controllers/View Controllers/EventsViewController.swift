@@ -20,7 +20,6 @@ class EventsViewController: UIViewController {
     var refresh = UIRefreshControl()
     
     //Search Bar
-    
     var searchedEvents = [Date: [Event]]()
     var searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
@@ -56,13 +55,15 @@ class EventsViewController: UIViewController {
     //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
+        
         loadData()
         searchBarSetUp()
         
-        // Setting Obvservers
-        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(UIApplication.didBecomeActiveNotification.rawValue), object: nil) // reloads data when scene becomes active.
-//        NotificationCenter.default.addObserver(self, selector: #selector(reminderFired), name: NSNotification.Name(StringConstants.reminderReceivedNotificationName), object: nil)
-        navigationBar()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(UIApplication.didBecomeActiveNotification.rawValue), object: nil)
+
+        navigationBarColor()
         refreshSetUp()
         
         
@@ -78,18 +79,9 @@ class EventsViewController: UIViewController {
         //self.tableView.reloadData()
     }
     
-    //MARK: - Helpers
+
     
-    // what you want to happen when youre inside this obverver/view
-//    @objc private func reminderFired() {
-//       view.backgroundColor = .systemRed
-//       tableView.backgroundColor = .systemRed
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // want this on the main treath so ther is no interoption or waiting.
-//            self.view.backgroundColor = .systemBackground
-//            self.tableView.backgroundColor = .systemBackground
-//        }
-//    }
+    //MARK: - Helpers
     
     private func reloadView() {
         EventController.shared.fetchEvent { result in
@@ -110,6 +102,7 @@ class EventsViewController: UIViewController {
         tableView.addSubview(refresh)
     }
     func searchBarSetUp() {
+        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search your events"
@@ -119,8 +112,8 @@ class EventsViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    func navigationBar() {
-        navigationController?.navigationBar.backgroundColor = UIColor.white
+    func navigationBarColor() {
+        navigationController?.navigationBar.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
     }
     
     @objc func loadData() {
@@ -177,14 +170,17 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         
         // return the header view here
         let day = dataSourceIndex[section]
+    
         
         let view = UIView()
+        view.clipsToBounds = true
+        view.frame =  CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
         view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
         
         let label = UILabel()
         label.text = day.formatDay()
         label.font = UIFont(name: "PingFangSC-Thin", size: 15.0)
-        label.frame = CGRect(x: 32, y: 0, width: 300, height: 35)
+        label.frame = CGRect(x: 32, y: 0, width: tableView.frame.width, height: 32)
         view.addSubview(label)
         
         // Color Sectioning based on Todays Date.
@@ -201,6 +197,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         
         return view
     }
+    
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 32
@@ -238,14 +235,17 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         
         // Costume Seperator
-    
-        if (row.count == 1 && row.count < 1) {
+
+        if (row.count == 0 && row.count < 0) {
             cell.layer.borderColor = UIColor.systemBlue.cgColor
             cell.layer.borderWidth = 0.5
-        } else if (row.count == 1 && row.count > 1) {
-            cell.separatorInset.left = 32
+        } else if (row.count == 0 && row.count > 0) {
+            cell.separatorInset.left = 100
         }
-
+        
+       
+        
+    
         return cell
     }
     

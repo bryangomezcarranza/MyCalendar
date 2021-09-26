@@ -32,6 +32,11 @@ class EventDetailTableViewController: UITableViewController {
         updateViews()
         createDatePickerView()
         
+//        let appearance = UINavigationBarAppearance()
+//        appearance.configureWithOpaqueBackground()
+//        navigationController?.navigationBar.standardAppearance =  appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+        
         reminderDatePicker.preferredDatePickerStyle = .compact
         reminderDatePicker.inputView?.sizeToFit()
         
@@ -130,4 +135,3 @@ extension EventDetailTableViewController: UpdateLocationProtocol {
         locationTextField.text = location.subtitle
     }  
 }
-

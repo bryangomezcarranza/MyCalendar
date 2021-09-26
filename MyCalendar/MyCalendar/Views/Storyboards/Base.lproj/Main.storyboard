@@ -35,7 +35,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.93999999999999995" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="yia-9Q-WOq" firstAttribute="centerY" secondItem="sMm-6l-YI1" secondAttribute="centerY" constant="-25" id="Sea-Jz-qga"/>
                                     <constraint firstItem="Tcj-Rd-vxX" firstAttribute="centerX" secondItem="sMm-6l-YI1" secondAttribute="centerX" id="XDZ-41-4bc"/>
@@ -44,9 +44,9 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xfO-ly-je4">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="separatorColor" red="0.082581467929999999" green="0.46985530850000001" blue="0.98116189239999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="separatorColor" systemColor="systemBlueColor"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="lJs-MI-YzQ">
                                     <rect key="frame" x="0.0" y="151" width="414" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -112,24 +112,24 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="sMm-6l-YI1" secondAttribute="bottom" id="0FV-8b-omC"/>
-                            <constraint firstAttribute="bottom" secondItem="xfO-ly-je4" secondAttribute="bottom" id="2lV-Bc-gPw"/>
+                            <constraint firstItem="xfO-ly-je4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Gbm-Sz-Ceq"/>
+                            <constraint firstItem="xfO-ly-je4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RFb-2z-wEE"/>
                             <constraint firstItem="sMm-6l-YI1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RdP-7z-rO2"/>
-                            <constraint firstItem="xfO-ly-je4" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Sk0-Zy-ZSR"/>
                             <constraint firstItem="sMm-6l-YI1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Wea-83-OXa"/>
-                            <constraint firstItem="xfO-ly-je4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZVa-mq-4pc"/>
-                            <constraint firstItem="xfO-ly-je4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="pbY-Mu-PjW"/>
+                            <constraint firstItem="xfO-ly-je4" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="uDb-L7-gxZ"/>
+                            <constraint firstItem="xfO-ly-je4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="xcK-Xn-Uj6"/>
                             <constraint firstItem="sMm-6l-YI1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="zjd-rL-81v"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iKw-uv-FJP">
                         <barButtonItem key="leftBarButtonItem" id="Yxs-O2-3VY">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="Dz4-HV-ghG">
-                                <rect key="frame" x="20" y="1" width="169" height="42"/>
+                            <button key="customView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="Dz4-HV-ghG" userLabel="Event">
+                                <rect key="frame" x="20" y="0.0" width="169" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                 <state key="normal" title="Events">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -151,7 +151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="964" y="-123"/>
+            <point key="canvasLocation" x="963.76811594202911" y="-123.21428571428571"/>
         </scene>
         <!--Account-->
         <scene sceneID="Tph-oe-ycO">
@@ -160,7 +160,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="j5A-WQ-0Sc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="WUY-hN-Mwl">
                             <rect key="frame" x="0.0" y="649" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -515,17 +515,17 @@
                             <outlet property="delegate" destination="3u3-pX-AS2" id="ySk-g8-TBB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Account" id="8c9-Oh-Sp7"/>
+                    <navigationItem key="navigationItem" title="Account" id="tdY-aX-GQt"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="etJ-lc-BNs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="963.76811594202911" y="563.83928571428567"/>
         </scene>
-        <!--Create Event/Task-->
+        <!--Create Event-->
         <scene sceneID="DI0-5N-VNc">
             <objects>
                 <tableViewController storyboardIdentifier="EventDetailViewController" id="n3d-sT-c5x" customClass="EventDetailTableViewController" customModule="MyCalendar" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Qn-0N-b4O">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Qn-0N-b4O">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -696,7 +696,7 @@
                             <outlet property="delegate" destination="n3d-sT-c5x" id="89z-CV-bPK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Create Event/Task" id="f5V-9H-8VV">
+                    <navigationItem key="navigationItem" title="Create Event" id="f5V-9H-8VV">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="PJA-FJ-Luh">
                             <connections>
                                 <action selector="saveButtonTapped:" destination="n3d-sT-c5x" id="rdw-D9-bb2"/>
@@ -767,7 +767,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wwn-m8-uep">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="Faz-l8-FfG" kind="relationship" relationship="viewControllers" id="GbN-2j-Do7"/>
@@ -787,8 +787,15 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5AZ-kY-bYX">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" systemColor="systemGray4Color"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IG3-tz-S0L">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="3xE-7e-PpM"/>
                     </connections>
@@ -806,6 +813,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Z3Y-NI-WcC">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <navigationBarAppearance key="standardAppearance"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4e6-j0-9oP">
@@ -844,6 +852,9 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

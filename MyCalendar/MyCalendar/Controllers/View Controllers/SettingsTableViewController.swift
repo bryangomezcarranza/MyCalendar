@@ -12,11 +12,17 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        settingsBarColor()
+        tableView.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
        
 
     }
     //MARK: - Private Functions
+    private func settingsBarColor() {
+        navigationController?.navigationBar.clipsToBounds = true
+        navigationController?.navigationBar.contentMode = .scaleAspectFill
+        navigationController?.navigationBar.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
+    }
     private func shareSheetTapped() {
         let textToShare = "Keep track of your events and task with (Name). An App that will help you stay organized!"
         guard let url = URL(string: "https://apps.apple.com/us/app/pixel-starships/id321756558") else { return }
