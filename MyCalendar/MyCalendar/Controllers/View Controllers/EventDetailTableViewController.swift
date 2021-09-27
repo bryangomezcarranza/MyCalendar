@@ -31,18 +31,10 @@ class EventDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         updateViews()
         createDatePickerView()
-        
-//        let appearance = UINavigationBarAppearance()
-//        appearance.configureWithOpaqueBackground()
-//        navigationController?.navigationBar.standardAppearance =  appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+        navBarAppearance()
         
         reminderDatePicker.preferredDatePickerStyle = .compact
         reminderDatePicker.inputView?.sizeToFit()
-        
-//        let screenWidth = self.view.frame.width
-//        let screenHeight = self.view.frame.height
-//        reminderDatePicker.frame = CGRect(x: 0, y: screenHeight - 216 - 44, width: screenWidth, height: 216)
     }
     
     //MARK: - Actions
@@ -88,10 +80,18 @@ class EventDetailTableViewController: UITableViewController {
         guard let date = reminderDate else { return }
         reminderDatePicker.date = date
     }
+    //MARK: - UI
+    private func navBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+    }
     
     //MARK: - Helper Methods
     
-    func createToolBar() -> UIToolbar {
+    private func createToolBar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
 
@@ -101,18 +101,18 @@ class EventDetailTableViewController: UITableViewController {
 
         return toolbar
     }
-    func createDatePickerView() {
+    private func createDatePickerView() {
         datePicker.preferredDatePickerStyle = .wheels
         dueDateTextField.inputView = datePicker
         dueDateTextField.inputAccessoryView = createToolBar()
     }
 
-   @objc func donePressed() {
+   @objc private func donePressed() {
        self.dueDateTextField.text = datePicker.date.formatDueDate()
         self.view.endEditing(true)
     }
     
-    func updateViews() {
+    private func updateViews() {
         guard let event = event else { return }
         titleTextField.text = event.name
         noteTextField.text = event.note

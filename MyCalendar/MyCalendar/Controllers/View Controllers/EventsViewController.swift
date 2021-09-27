@@ -47,7 +47,6 @@ class EventsViewController: UIViewController {
         
     }
     
-    
     // storage
     private var eventsByDay: [Date: [Event]] = [:]
     private var sectionIndex: [Date] = []
@@ -55,34 +54,37 @@ class EventsViewController: UIViewController {
     //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
-        
         loadData()
         searchBarSetUp()
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(UIApplication.didBecomeActiveNotification.rawValue), object: nil)
-
+        
         navigationBarColor()
         refreshSetUp()
-        
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorColor = UIColor.systemBlue
-        tableView.isHidden = true
+        setupViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateViews()
-        //self.tableView.reloadData()
     }
     
-
+//MARK: - UI
+    private func navigationBarColor() {
+        navigationController?.navigationBar.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
+    }
+    
+    private func searchBarSetUp() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search your events"
+        searchController.searchBar.returnKeyType = .go
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
     
     //MARK: - Helpers
-    
     private func reloadView() {
         EventController.shared.fetchEvent { result in
             switch result {
@@ -96,27 +98,13 @@ class EventsViewController: UIViewController {
         self.tableView.reloadData()
     }
 
-    func refreshSetUp() {
+    private func refreshSetUp() {
         refresh.attributedTitle = NSAttributedString(string: "Pull down to refresh")
         refresh.addTarget(self, action: #selector(loadData), for: .valueChanged)
         tableView.addSubview(refresh)
     }
-    func searchBarSetUp() {
-        
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search your events"
-        searchController.searchBar.returnKeyType = .go
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
     
-    func navigationBarColor() {
-        navigationController?.navigationBar.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
-    }
-    
-    @objc func loadData() {
+    @objc private func loadData() {
         EventController.shared.fetchEvent { result in
             switch result {
             case .success(let event):
@@ -128,7 +116,7 @@ class EventsViewController: UIViewController {
         }
     }
     
-    func updateViews() {
+    private func updateViews() {
         DispatchQueue.main.async {
             self.eventsByDay = [:]
             for event in EventController.shared.events {
@@ -143,7 +131,7 @@ class EventsViewController: UIViewController {
         }
     }
     
-    func filterContent(searchText: String) {
+    private func filterContent(searchText: String) {
         searchedEvents =  [:]
         for (key, value) in eventsByDay {
             let filtered = value.filter { $0.name.lowercased().contains(searchText.lowercased()) }
@@ -155,7 +143,17 @@ class EventsViewController: UIViewController {
         
         self.tableView.reloadData()
     }
+    
+    private func setupViews() {
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.separatorColor = UIColor.systemBlue
+        self.tableView.isHidden = true
+        UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
+    }
 }
+
+ 
 
 //MARK: - tableview Delegate & DataSource
 extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -283,6 +281,10 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToEventDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailTableViewController else { return }
+            let event = dataSource[dataSourceIndex[indexPath.section]]![indexPath.row]
+            destinationVC.event = event
+        } else if segue.identifier == "goToDetails" {
+            guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? DetailViewController else { return }
             let event = dataSource[dataSourceIndex[indexPath.section]]![indexPath.row]
             destinationVC.event = event
         }

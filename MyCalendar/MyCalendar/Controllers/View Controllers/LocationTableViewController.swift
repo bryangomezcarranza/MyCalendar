@@ -11,7 +11,7 @@ import CoreLocation
 
 //MARK: - Protocol for Location
 protocol UpdateLocationProtocol: AnyObject {
-    func updateLocation(with Location: MKLocalSearchCompletion)
+    func updateLocation(with location: MKLocalSearchCompletion)
 }
 
 class LocationTableViewController: UITableViewController {
@@ -98,7 +98,7 @@ class LocationTableViewController: UITableViewController {
         }
     }
     
-    func updatePlacemark(_ placemark: CLPlacemark?, boundingRegion: MKCoordinateRegion) {
+    private func updatePlacemark(_ placemark: CLPlacemark?, boundingRegion: MKCoordinateRegion) {
         currentPlacemark = placemark
         searchCompleter?.region = boundingRegion
     }

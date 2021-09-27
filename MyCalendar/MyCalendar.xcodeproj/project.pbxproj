@@ -22,6 +22,10 @@
 		5B5BA85F26FAE7EC00D2189A /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BA85E26FAE7EC00D2189A /* NotificationScheduler.swift */; };
 		5B5BA86126FAE9DB00D2189A /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BA86026FAE9DB00D2189A /* StringConstants.swift */; };
 		5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B779A9C26E168B8009B05B8 /* DayFormatter.swift */; };
+		5BB6E9BA2700E937009D9D76 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9B92700E937009D9D76 /* DetailViewController.swift */; };
+		5BB6E9BC270102C9009D9D76 /* LocationMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */; };
+		5BB6E9BE270120BC009D9D76 /* EventInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */; };
+		5BB6E9C0270124B4009D9D76 /* EventNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */; };
 		5BB7258126E30D64003C997E /* EventDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */; };
 		5BB7258526E53974003C997E /* DueDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258426E53974003C997E /* DueDateTableViewCell.swift */; };
 		5BB7258726E543EB003C997E /* StringDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258626E543EB003C997E /* StringDateFormatter.swift */; };
@@ -50,6 +54,10 @@
 		5B5BA85E26FAE7EC00D2189A /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		5B5BA86026FAE9DB00D2189A /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		5B779A9C26E168B8009B05B8 /* DayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFormatter.swift; sourceTree = "<group>"; };
+		5BB6E9B92700E937009D9D76 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMapCell.swift; sourceTree = "<group>"; };
+		5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfoCell.swift; sourceTree = "<group>"; };
+		5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNoteCell.swift; sourceTree = "<group>"; };
 		5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailTableViewController.swift; sourceTree = "<group>"; };
 		5BB7258426E53974003C997E /* DueDateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DueDateTableViewCell.swift; sourceTree = "<group>"; };
 		5BB7258626E543EB003C997E /* StringDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDateFormatter.swift; sourceTree = "<group>"; };
@@ -165,6 +173,7 @@
 				5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */,
 				5BB7258A26E80C26003C997E /* LocationTableViewController.swift */,
 				5BB7265426F01215003C997E /* SettingsTableViewController.swift */,
+				5BB6E9B92700E937009D9D76 /* DetailViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -174,6 +183,9 @@
 			children = (
 				5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */,
 				5BB7258426E53974003C997E /* DueDateTableViewCell.swift */,
+				5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */,
+				5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */,
+				5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */,
 			);
 			path = CostumeCells;
 			sourceTree = "<group>";
@@ -279,16 +291,20 @@
 			files = (
 				5B5BA86126FAE9DB00D2189A /* StringConstants.swift in Sources */,
 				5BB7258B26E80C26003C997E /* LocationTableViewController.swift in Sources */,
+				5BB6E9BC270102C9009D9D76 /* LocationMapCell.swift in Sources */,
 				5B59E4AC26FD3D0700B8642C /* NotificationManger.swift in Sources */,
+				5BB6E9C0270124B4009D9D76 /* EventNoteCell.swift in Sources */,
 				5B48FA1026DEBC8B0056F2EE /* EventTableViewCell.swift in Sources */,
 				5BB7258726E543EB003C997E /* StringDateFormatter.swift in Sources */,
 				5BB725F826E9653F003C997E /* MKPlacemark.swift in Sources */,
 				5B48F9B126DD97130056F2EE /* EventsViewController.swift in Sources */,
 				5BB7258126E30D64003C997E /* EventDetailTableViewController.swift in Sources */,
 				5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */,
+				5BB6E9BA2700E937009D9D76 /* DetailViewController.swift in Sources */,
 				5B48FA0926DEAEFF0056F2EE /* Event.swift in Sources */,
 				5B48F9AD26DD97130056F2EE /* AppDelegate.swift in Sources */,
 				5B48FA0C26DEB4290056F2EE /* EventController.swift in Sources */,
+				5BB6E9BE270120BC009D9D76 /* EventInfoCell.swift in Sources */,
 				5BB7265526F01215003C997E /* SettingsTableViewController.swift in Sources */,
 				5B5BA85F26FAE7EC00D2189A /* NotificationScheduler.swift in Sources */,
 				5BB7258526E53974003C997E /* DueDateTableViewCell.swift in Sources */,
