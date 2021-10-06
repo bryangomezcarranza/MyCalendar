@@ -19,13 +19,14 @@ class EventsViewController: UIViewController {
     
     var refresh = UIRefreshControl()
     
-    //Search Bar
+   //MARK: - Search Bar Set Up
     var searchedEvents = [Date: [Event]]()
     var searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
+    //MARK: - Computed Properties
     var isFiltering: Bool {
         return searchController.isActive && !isSearchBarEmpty
     }
@@ -47,21 +48,25 @@ class EventsViewController: UIViewController {
         
     }
     
-    // storage
+   //MARK: - Storage for Sectioning
     private var eventsByDay: [Date: [Event]] = [:]
     private var sectionIndex: [Date] = []
     
     //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         loadData()
         searchBarSetUp()
+        navigationBarColor()
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(UIApplication.didBecomeActiveNotification.rawValue), object: nil)
+        startObserving(&UserInterfaceStyleManager.shared)
         
-        navigationBarColor()
         refreshSetUp()
         setupViews()
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,7 +76,12 @@ class EventsViewController: UIViewController {
     
 //MARK: - UI
     private func navigationBarColor() {
-        navigationController?.navigationBar.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "navbar-tabbar")
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance =
+navigationController?.navigationBar.standardAppearance
     }
     
     private func searchBarSetUp() {
@@ -149,11 +159,15 @@ class EventsViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.separatorColor = UIColor.systemBlue
         self.tableView.isHidden = true
-        UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
+        
+        if #available(iOS 15.0, *) {
+            UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
+            UITableView.appearance().sectionFooterHeight = CGFloat(0)
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
-
- 
 
 //MARK: - tableview Delegate & DataSource
 extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -173,7 +187,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         let view = UIView()
         view.clipsToBounds = true
         view.frame =  CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
-        view.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
+        view.backgroundColor = UIColor(named: "tableview-section")
         
         let label = UILabel()
         label.text = day.formatDay()
@@ -182,25 +196,23 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         view.addSubview(label)
         
         // Color Sectioning based on Todays Date.
-        
         if day.formatDay() == Date().formatDay() {
             label.textColor = UIColor.systemBlue
             label.text = "Today, \(day.formatDay())"
-        } else if day.formatDay() < Date().formatDay() {
-            label.textColor = UIColor.red
+        } else if day < Date() {
+            label.textColor = UIColor(named: "pastDate")
             label.text = "Past Due - \(day.formatDay())"
-        } else {
-            label.textColor = UIColor.black
+        } else  {
+            label.textColor = UIColor(named: "futureDate")
         }
         
         return view
     }
     
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 32
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard dataSourceIndex.indices.contains(section) else { return 0 }
         let day = dataSourceIndex[section]
@@ -296,13 +308,21 @@ extension EventsViewController: EventTableViewCellDelegate {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
         event.isCompleted.toggle()
-        tableView.reloadData()
         
-    } 
+        if event.isCompleted {
+
+            let eventToDelete = dataSource[dataSourceIndex[indexPath.section]]![indexPath.row]
+            guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else  { return }
+                
+            EventController.shared.events.remove(at: index)
+        }
+        
+        tableView.reloadData()
+    }
+     
 }
 
 //MARK: - SearchBar Delegate & ResultUpdating
-
 extension EventsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
@@ -324,6 +344,7 @@ extension EventsViewController: UISearchBarDelegate, UISearchResultsUpdating {
         searchBar.resignFirstResponder()
     }
 }
+
 
 
 

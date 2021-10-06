@@ -12,7 +12,7 @@ class EventController {
     static let shared = EventController()
     let notificcationScheduler = NotificationScheduler()
 
-    let publicDB = CKContainer.default().publicCloudDatabase
+    let publicDB = CKContainer.default().privateCloudDatabase
     var events = [Event]()
     
     
@@ -40,7 +40,6 @@ class EventController {
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: EventStrings.recordTypeKey, predicate: predicate)
        
-
         publicDB.perform(query, inZoneWith: nil) { records, error in
             if let error = error {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -75,7 +74,7 @@ class EventController {
         
         notificcationScheduler.scheduleNotification(for: event)
     }
-    
+
     func delete(_ event: Event, completion: @escaping (Result<Bool, EventError>) -> Void) {
         let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [event.recordID])
         operation.qualityOfService = .userInteractive

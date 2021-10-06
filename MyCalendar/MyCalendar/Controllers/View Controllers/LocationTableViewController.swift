@@ -35,13 +35,7 @@ class LocationTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.searchBar.delegate = self
-        //definesPresentationContext = true
-        
-        locationManager.delegate = self
-        
+        setupView()
         startProvidingCompletions()
     }
     override func viewDidDisappear(_ animated: Bool) {
@@ -50,12 +44,22 @@ class LocationTableViewController: UITableViewController {
     }
     
     //MARK: - Private Funcs
+    private func setupView() {
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.searchBar.delegate = self
+       
+        startObserving(&UserInterfaceStyleManager.shared)
+        locationManager.delegate = self
+    }
+    
     private func startProvidingCompletions() {
         searchCompleter = MKLocalSearchCompleter()
         searchCompleter?.delegate = self
         searchCompleter?.resultTypes = .pointOfInterest
         //searchCompleter?.region = searchRegion
     }
+    
     private func stopProvidingCompletions() {
         searchCompleter = nil
     }
@@ -103,7 +107,7 @@ class LocationTableViewController: UITableViewController {
         searchCompleter?.region = boundingRegion
     }
 
-    // MARK: - Table view data source
+    // MARK: - Table delegate & data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return completerSearch ? completerResults?.count ?? 0  : places?.count ?? 0
@@ -134,6 +138,7 @@ class LocationTableViewController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
 }
+
 //MARK: - UISearchBar Delegate
 extension LocationTableViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

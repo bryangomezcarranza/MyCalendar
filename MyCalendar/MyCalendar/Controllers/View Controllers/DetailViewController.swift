@@ -10,15 +10,17 @@ import MapKit
 
 class DetailViewController: UIViewController {
     
+    //MARK: - IB Outlets
     @IBOutlet weak var tableView: UITableView!
+    
+    //MARK: - Properties
     var event: Event?
     
+    //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
         navBarAppearance()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.reloadData()
+        setupView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,12 +32,30 @@ class DetailViewController: UIViewController {
     private func navBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
+        appearance.backgroundColor = UIColor(named: "navbar-tabbar")
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
     }
     
+    //MARK: - IB Actions
+    @IBAction func mapViewTapped(_ sender: UITapGestureRecognizer) {
+        coordinates(forAddress: event!.location) { [self] location in
+            guard let location = location else { return }
+            openMapForPlace(lat: location.latitude, long: location.longitude, placeName: self.event!.location)
+            
+            view.snapshotView(afterScreenUpdates: true)
+        }
+    }
+    
     //MARK: - Helper Methods
+    func setupView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.reloadData()
+        
+        startObserving(&UserInterfaceStyleManager.shared)
+    }
+    
     func coordinates(forAddress address: String, completion: @escaping (CLLocationCoordinate2D?) -> Void) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) {
@@ -88,7 +108,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: EventNoteCell.self), for: indexPath) as! EventNoteCell
-            cell.noteLabel.text = "Notes \n\(event!.note)"
+            cell.noteLabel.text = event!.note
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: LocationMapCell.self), for: indexPath) as! LocationMapCell
@@ -104,33 +124,28 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row  = indexPath.row
-        
-        if row == 2 {
-            
-            coordinates(forAddress: event!.location) { [self] location in
-                guard let location = location else { return }
-                openMapForPlace(lat: location.latitude, long: location.longitude, placeName: self.event!.location)
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         let row = indexPath.row
         let eventLocation = event?.location
+        let eventNote = event?.note
         
         if row == 2 {
             if  eventLocation?.isEmpty == true {
               return 0
             } else  {
-             return 300
+             return 200
             }
         } else if row == 0 {
             return 150
+        } else if row == 1 {
+            if eventNote?.isEmpty == true {
+                return 0
+            } else {
+            return 90
+            }
         } else {
-            return 54
+            return tableView.rowHeight
         }
     }
     

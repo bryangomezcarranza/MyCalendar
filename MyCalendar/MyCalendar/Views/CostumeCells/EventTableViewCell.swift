@@ -20,11 +20,13 @@ class EventTableViewCell: UITableViewCell {
     //MARK: - Properties
     weak var delegate: EventTableViewCellDelegate?
     
+    
     var event: Event? {
         didSet {
             updateViews()
         }
     }
+    
     //MARK: - Actions
     @IBAction func hasBeenCompletedButtonTapped(_ sender: Any) {
         delegate?.eventCellButtonTapped(self)
@@ -43,6 +45,7 @@ class EventTableViewCell: UITableViewCell {
         dateLabel.text = "Due at \(event.dueDate.formatDate())"
        
         
+        UserDefaults.standard.set(event.isCompleted, forKey: "itsCompleted")
         let image = event.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
         itsCompletedButton.setImage(image, for: .normal)
     }

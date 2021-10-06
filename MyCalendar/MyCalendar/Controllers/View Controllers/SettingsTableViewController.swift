@@ -10,24 +10,43 @@ import MessageUI
 
 class SettingsTableViewController: UITableViewController {
 
+    @IBOutlet weak var darkModeSwitch: UISwitch!
+    @IBOutlet weak var bottomView: UIView!
+    
+    let defautls = UserDefaults.standard
+    let darkModeToggled = "darkModeToggled"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         navBarAppearance()
-        tableView.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
+        tableView.backgroundColor = UIColor(named: "tableview-section")
+        
+        startObserving(&UserInterfaceStyleManager.shared)
+        darkModeSwitch.isOn = UserInterfaceStyleManager.shared.currentStyle == .dark
+
     }
+    
+    //MARK: - Actions
+    @IBAction func darkModeToggled(_ sender: UISwitch) {
+        
+        let darkModeOn = sender.isOn
+        UserDefaults.standard.set(darkModeOn, forKey: UserInterfaceStyleManager.userInterfaceStyleDarkModeOn)
+        UserInterfaceStyleManager.shared.updateUserInterfaceStyle(darkModeOn)
+    }
+    
     
     //MARK: - UI
     private func navBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(red: 252/255, green: 252/255, blue: 252/255, alpha: 100)
+        appearance.backgroundColor = UIColor(named: "navbar-tabbar")
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
     }
     
-    
-    
     //MARK: - Private Functions
+
     private func shareSheetTapped() {
         let textToShare = "Keep track of your events and task with (Name). An App that will help you stay organized!"
         guard let url = URL(string: "https://apps.apple.com/us/app/pixel-starships/id321756558") else { return }
@@ -36,10 +55,7 @@ class SettingsTableViewController: UITableViewController {
     }
     
     private func showMailComposer() {
-        guard MFMailComposeViewController.canSendMail() else {
-            // Show alert informing the user
-            return
-        }
+        guard MFMailComposeViewController.canSendMail() else { return }
         
         let composer = MFMailComposeViewController()
         composer.mailComposeDelegate = self
@@ -52,7 +68,6 @@ class SettingsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 3
     }
 
@@ -89,7 +104,7 @@ class SettingsTableViewController: UITableViewController {
             }
             
         } else if (section == 2) {
-            if row == 2 {
+            if row == 1 {
                 showMailComposer()
             }
         }
@@ -97,11 +112,11 @@ class SettingsTableViewController: UITableViewController {
     //MARK: - Header and Footer layout functions.
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.tintColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
+        header.tintColor = UIColor(named: "tableview-section")
     }
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         let  footer = view as! UITableViewHeaderFooterView
-        footer.tintColor =  UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 100)
+        footer.tintColor =  UIColor(named: "tableview-section")
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -123,11 +138,9 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 56 
     }
-    
 }
 
 //MARK: - Section Heading
-
 extension SettingsTableViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         if let _ = error {
@@ -151,3 +164,4 @@ extension SettingsTableViewController: MFMailComposeViewControllerDelegate {
         controller.dismiss(animated: true)
     }
 }
+

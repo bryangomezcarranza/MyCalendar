@@ -53,7 +53,7 @@ class LocationMapCell: UITableViewCell {
                     
                     // set zoom level
                     // For Xcode
-                    let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 250, longitudinalMeters: 250)
+                    let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 4500, longitudinalMeters: 4000)
                     self?.mapView.setRegion(region, animated: false)
                 }
             }
