@@ -94,4 +94,8 @@ class EventController {
         
         notificcationScheduler.clearNotifications(for: event)
     }
+    
+    func toggleIsCompleted(event: Event) {
+        event.isCompleted.toggle()
+    }
 }

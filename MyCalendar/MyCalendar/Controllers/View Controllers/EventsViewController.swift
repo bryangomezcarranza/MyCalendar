@@ -18,6 +18,7 @@ class EventsViewController: UIViewController {
     //MARK: - Properties
     
     var refresh = UIRefreshControl()
+    let notificcationScheduler = NotificationScheduler()
     
    //MARK: - Search Bar Set Up
     var searchedEvents = [Date: [Event]]()
@@ -307,16 +308,29 @@ extension EventsViewController: EventTableViewCellDelegate {
     func eventCellButtonTapped(_ sender: EventTableViewCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
-        event.isCompleted.toggle()
+        EventController.shared.toggleIsCompleted(event: event)
         
         if event.isCompleted {
-
-            let eventToDelete = dataSource[dataSourceIndex[indexPath.section]]![indexPath.row]
-            guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else  { return }
+            
+            guard let index = EventController.shared.events.firstIndex(of: event) else  { return }
+            
+            EventController.shared.delete(event) { result in
+                switch result {
                 
-            EventController.shared.events.remove(at: index)
+                case .success( let bool ):
+                    if bool == true {
+                        EventController.shared.events.remove(at: index)
+                        DispatchQueue.main.async {
+                            // Delete row that was selected.
+                            //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
+                            self.updateViews()
+                        }
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
-        
         tableView.reloadData()
     }
      

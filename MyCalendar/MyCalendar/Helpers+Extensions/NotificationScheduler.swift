@@ -28,7 +28,7 @@ class NotificationScheduler {
    
         let fireDateComponent = Calendar.current.dateComponents([.hour, .minute], from: timeOfDay)
         let trigger = UNCalendarNotificationTrigger(dateMatching: fireDateComponent, repeats: true)
-        let request = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in // different
             if let error = error {
@@ -37,6 +37,7 @@ class NotificationScheduler {
         }
         
     }
+    
     func clearNotifications(for event: Event) {
         let identifier = event.recordID.recordName
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])

@@ -9,7 +9,7 @@ import UIKit
 import CloudKit
 
 struct EventStrings {
-    static let recordTypeKey = "Create"
+    static let recordTypeKey = "Task"
     fileprivate static let nameKey = "name"
     fileprivate static let noteKey = "note"
     fileprivate static let dueDateKey = "dueDate"
