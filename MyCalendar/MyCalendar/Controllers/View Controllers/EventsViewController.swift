@@ -17,6 +17,11 @@ class EventsViewController: UIViewController {
     
     //MARK: - Properties
     
+    // removes ovserver 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     var refresh = UIRefreshControl()
     let notificcationScheduler = NotificationScheduler()
     
@@ -50,7 +55,15 @@ class EventsViewController: UIViewController {
     }
     
    //MARK: - Storage for Sectioning
-    private var eventsByDay: [Date: [Event]] = [:]
+    private var eventsByDay: [Date: [Event]] = [:] {
+        didSet {
+            if eventsByDay.count > 0 {
+                self.tableView.isHidden = false
+            } else {
+                self.tableView.isHidden = true
+            }
+        }
+    }
     private var sectionIndex: [Date] = []
     
     //MARK: - Lifecycles
@@ -73,6 +86,7 @@ class EventsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateViews()
+            
     }
     
 //MARK: - UI
@@ -88,7 +102,7 @@ navigationController?.navigationBar.standardAppearance
     private func searchBarSetUp() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search your events"
+        searchController.searchBar.placeholder = "Search for task"
         searchController.searchBar.returnKeyType = .go
         navigationItem.searchController = searchController
         definesPresentationContext = true
@@ -159,7 +173,7 @@ navigationController?.navigationBar.standardAppearance
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.separatorColor = UIColor.systemBlue
-        self.tableView.isHidden = true
+        //self.tableView.isHidden = true
         
         if #available(iOS 15.0, *) {
             UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
@@ -219,11 +233,11 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         let day = dataSourceIndex[section]
         
         // No Events View
-        if eventsByDay[day]?.count == 0 {
-            self.tableView.isHidden = true
-        } else {
-            self.tableView.isHidden = false
-        }
+//        if eventsByDay[day]?.count == 0 {
+//            self.tableView.isHidden = true
+//        } else {
+//            self.tableView.isHidden = false
+//        }
         return dataSource[day]?.count ?? 0
     }
     

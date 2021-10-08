@@ -42,7 +42,9 @@ class EventTableViewCell: UITableViewCell {
             return
         }
         titleLabel.text = event.name
-        dateLabel.text = "Due at \(event.dueDate.formatDate())"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
+        dateLabel.text = "Starts at: \(event.dueDate.formatDate())"
+        dateLabel.layer.opacity = 0.7
        
         
         UserDefaults.standard.set(event.isCompleted, forKey: "itsCompleted")

@@ -59,8 +59,8 @@ class SettingsTableViewController: UITableViewController {
         
         let composer = MFMailComposeViewController()
         composer.mailComposeDelegate = self
-        composer.setToRecipients(["bryandionizio@gmail.com"])
-        composer.setSubject("(AppName) email support (iPhone)")
+        composer.setToRecipients(["eventzapplication@gmail.com"])
+        composer.setSubject("Eventz email support (iPhone)")
         composer.setMessageBody("I love your app but.... ", isHTML: false)
         
         present(composer, animated: true)
@@ -68,13 +68,11 @@ class SettingsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 1
-        } else if section == 1 {
             return 4
         } else {
             return 3
@@ -86,15 +84,21 @@ class SettingsTableViewController: UITableViewController {
        
         let section = indexPath.section, row = indexPath.row
         
-        if (section == 1) {
+        if (section == 0) {
+            if row == 0 {
+                if let url = URL(string: "https://twitter.com/app_eventz") {
+                    UIApplication.shared.open(url)
+                }
+            }
+        
             if row == 1 {
-                if let url = URL(string: "https://www.instagram.com/bryan_iosdev/") {
+                if let url = URL(string: "https://www.instagram.com/eventzapplication/") {
                     UIApplication.shared.open(url)
                 }
             }
             
             if row == 3 {
-                if  let url = URL(string: "https://apps.apple.com/us/app/pixel-starships/id321756558") {
+                if  let url = URL(string: "https://apps.apple.com/us/app/(name and id)") {
                     UIApplication.shared.open(url)
                 }
             }
@@ -103,7 +107,7 @@ class SettingsTableViewController: UITableViewController {
                 shareSheetTapped()
             }
             
-        } else if (section == 2) {
+        } else if (section == 1) {
             if row == 1 {
                 showMailComposer()
             }
@@ -120,23 +124,23 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 2 {
+        if section == 1 {
             return 0
         } else {
-            return 40
+            return 0
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 40
+            return 20
         } else {
             return 0
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 56 
+        return 56
     }
 }
 

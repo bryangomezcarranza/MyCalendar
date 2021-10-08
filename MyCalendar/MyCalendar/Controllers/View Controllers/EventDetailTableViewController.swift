@@ -33,6 +33,8 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         updateViews()
         createDatePickerView()
         navBarAppearance()
+        noteTextView.delegate = self
+        noteTextView.placeholder = "Notes.."
         startObserving(&UserInterfaceStyleManager.shared)
     }
     
@@ -120,8 +122,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         locationTextField.text = event.location
         reminderDatePicker.date = event.reminderDate
         
-        noteTextView.delegate = self
-        noteTextView.placeholder = "Notes.."
+       
         
         locationTextField.adjustsFontSizeToFitWidth = true
         locationTextField.minimumFontSize = 14

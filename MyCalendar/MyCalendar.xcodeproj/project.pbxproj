@@ -32,7 +32,6 @@
 		5BB6E9BE270120BC009D9D76 /* EventInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */; };
 		5BB6E9C0270124B4009D9D76 /* EventNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */; };
 		5BB7258126E30D64003C997E /* EventDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */; };
-		5BB7258526E53974003C997E /* DueDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258426E53974003C997E /* DueDateTableViewCell.swift */; };
 		5BB7258726E543EB003C997E /* StringDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258626E543EB003C997E /* StringDateFormatter.swift */; };
 		5BB7258B26E80C26003C997E /* LocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7258A26E80C26003C997E /* LocationTableViewController.swift */; };
 		5BB725F826E9653F003C997E /* MKPlacemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB725F726E9653F003C997E /* MKPlacemark.swift */; };
@@ -69,7 +68,6 @@
 		5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfoCell.swift; sourceTree = "<group>"; };
 		5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNoteCell.swift; sourceTree = "<group>"; };
 		5BB7258026E30D64003C997E /* EventDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailTableViewController.swift; sourceTree = "<group>"; };
-		5BB7258426E53974003C997E /* DueDateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DueDateTableViewCell.swift; sourceTree = "<group>"; };
 		5BB7258626E543EB003C997E /* StringDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDateFormatter.swift; sourceTree = "<group>"; };
 		5BB7258A26E80C26003C997E /* LocationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewController.swift; sourceTree = "<group>"; };
 		5BB725F726E9653F003C997E /* MKPlacemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKPlacemark.swift; sourceTree = "<group>"; };
@@ -204,7 +202,6 @@
 			isa = PBXGroup;
 			children = (
 				5B48FA0F26DEBC8B0056F2EE /* EventTableViewCell.swift */,
-				5BB7258426E53974003C997E /* DueDateTableViewCell.swift */,
 				5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */,
 				5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */,
 				5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */,
@@ -325,7 +322,6 @@
 				5BB7265526F01215003C997E /* SettingsTableViewController.swift in Sources */,
 				5B482CB0270CC4D80081EB25 /* MyNavigationController.swift in Sources */,
 				5B5BA85F26FAE7EC00D2189A /* NotificationScheduler.swift in Sources */,
-				5BB7258526E53974003C997E /* DueDateTableViewCell.swift in Sources */,
 				5B482CAB270CC2330081EB25 /* UserInterfaceStylerObserver.swift in Sources */,
 				5B482CB2270CC64F0081EB25 /* TabBarController.swift in Sources */,
 				5B48FA0E26DEB6150056F2EE /* EventError.swift in Sources */,
@@ -406,7 +402,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -461,7 +457,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -476,6 +472,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = MyCalendar/MyCalendar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D5YK8XAHMK;
@@ -488,7 +485,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryangomez.MyCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -497,6 +494,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = MyCalendar/MyCalendar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D5YK8XAHMK;
@@ -509,7 +507,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryangomez.MyCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

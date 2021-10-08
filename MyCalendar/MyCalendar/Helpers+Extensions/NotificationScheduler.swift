@@ -20,8 +20,8 @@ class NotificationScheduler {
         
         
         let content = UNMutableNotificationContent()
-        content.title = "Event reminder"
-        content.body = "Event ' \(event.name)' starts on \(event.dueDate.formatDueDate())"
+        content.title = "\(event.name)"
+        content.body = "Starts on \(event.dueDate.formatDueDate())"
         content.sound = .default
         content.userInfo = [StringConstants.eventID : identifier] // info thats sent withing the notfication.
         content.categoryIdentifier = StringConstants.eventReminderCategoryIdentifier

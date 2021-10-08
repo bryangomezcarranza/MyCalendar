@@ -103,7 +103,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: EventInfoCell.self), for: indexPath) as! EventInfoCell
             cell.titleLabel.text = event!.name
-            cell.dueDateLabel.text = "Event due on \n\(event!.dueDate.formatDueDate())"
+            cell.dueDateLabel.text = "Task due on \n\(event!.dueDate.formatDueDate())"
             cell.addressLabel.text = event?.location
             return cell
         case 1:
@@ -147,6 +147,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             return tableView.rowHeight
         }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Info"
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

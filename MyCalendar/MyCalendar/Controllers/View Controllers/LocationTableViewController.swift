@@ -106,6 +106,26 @@ class LocationTableViewController: UITableViewController {
         currentPlacemark = placemark
         searchCompleter?.region = boundingRegion
     }
+    
+    
+        private func displayLocationServicesDeniedAlert() {
+            let alertController = UIAlertController(title: "Location Authorization",
+                                                    message: "Need your current location to search for near by places",
+                                                    preferredStyle: .alert)
+            let openSettingsAction = UIAlertAction(title: "Update Settings", style: .default) { (_) in
+                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+    
+                    UIApplication.shared.open(settingsURL)
+                }
+            }
+    
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    
+            alertController.addAction(cancelAction)
+            alertController.addAction(openSettingsAction)
+            present(alertController, animated: true, completion: nil)
+        }
+
 
     // MARK: - Table delegate & data source
 
@@ -118,8 +138,8 @@ class LocationTableViewController: UITableViewController {
         
         if completerSearch {
             if let suggestion = completerResults?[indexPath.row] {
-                cell.textLabel?.text = suggestion.title
-                cell.detailTextLabel?.text = suggestion.subtitle
+                cell.textLabel?.attributedText = highlight(text: suggestion.title, rangeValues: suggestion.titleHighlightRanges)
+                cell.detailTextLabel?.attributedText = highlight(text: suggestion.subtitle, rangeValues: suggestion.subtitleHighlightRanges)
             }
         } else {
             let mapItem = places?[indexPath.row]
@@ -137,6 +157,18 @@ class LocationTableViewController: UITableViewController {
         delegate!.updateLocation(with: location)
         self.navigationController?.popViewController(animated: true)
     }
+    
+    private func highlight(text: String, rangeValues: [NSValue]) -> NSAttributedString {
+        let attributes = [NSAttributedString.Key.backgroundColor: UIColor.yellow]
+        let highlightedString = NSMutableAttributedString(string: text)
+        
+        let ranges = rangeValues.map({ $0.rangeValue })
+        
+        ranges.forEach { range in
+            highlightedString.addAttributes(attributes, range: range)
+        }
+        return highlightedString
+    }
 }
 
 //MARK: - UISearchBar Delegate
@@ -146,7 +178,6 @@ extension LocationTableViewController: UISearchBarDelegate {
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        requestLocation()
         searchBar.setShowsCancelButton(true, animated: true)
     }
     
@@ -166,52 +197,26 @@ extension LocationTableViewController: UISearchBarDelegate {
     }
 }
 
-//MARK: - Handling Location Status
-extension LocationTableViewController {
-    private func requestLocation() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            displayLocationServicesDisabledAlert()
-            return
-        }
-        let status = CLLocationManager.authorizationStatus()
-        guard status != .denied else {
-            displayLocationServicesDeniedAlert()
-            return
-        }
-        
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
-    }
-    
-    private func displayLocationServicesDisabledAlert() {
-        let alertController = UIAlertController(title: "Location is disable.",
-                                                message: "Please go to settings and enable notifications",
-                                                preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title:"Ok", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    private func displayLocationServicesDeniedAlert() {
-        let alertController = UIAlertController(title: "Location Authorization",
-                                                message: "Need your current location to search near by places",
-                                                preferredStyle: .alert)
-        let openSettingsAction = UIAlertAction(title: "Update Settings", style: .default) { (_) in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-               
-                UIApplication.shared.open(settingsURL)
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(openSettingsAction)
-        present(alertController, animated: true, completion: nil)
-    }
-}
-
 //MARK: - CLLocationManager Delegate
 extension LocationTableViewController: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+            
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .restricted:
+            break
+        case .denied:
+            displayLocationServicesDeniedAlert()
+        case .authorizedAlways:
+            manager.startUpdatingLocation()
+        case .authorizedWhenInUse:
+            manager.startUpdatingLocation()
+        @unknown default:
+            break
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         
@@ -224,6 +229,26 @@ extension LocationTableViewController: CLLocationManagerDelegate {
             self.updatePlacemark(self.currentPlacemark, boundingRegion: self.boundingRegion)
         }
     }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        
+        switch status {
+        case .restricted:
+            print("\nUsers location is restricted")
+            
+        case .denied:
+            print("\nUser denied access to use their location\n")
+            
+        case .authorizedWhenInUse:
+            print("\nuser granted authorizedWhenInUse\n")
+            
+        case .authorizedAlways:
+            print("\nuser selected authorizedAlways\n")
+            
+        default: break
+        }
+    }
+
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)
