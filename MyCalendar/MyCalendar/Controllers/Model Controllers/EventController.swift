@@ -96,6 +96,6 @@ class EventController {
     }
     
     func toggleIsCompleted(event: Event) {
-        event.isCompleted.toggle()
+            event.isCompleted.toggle()
     }
 }

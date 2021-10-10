@@ -102,7 +102,7 @@ navigationController?.navigationBar.standardAppearance
     private func searchBarSetUp() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for task"
+        searchController.searchBar.placeholder = "Search for events"
         searchController.searchBar.returnKeyType = .go
         navigationItem.searchController = searchController
         definesPresentationContext = true
@@ -328,22 +328,22 @@ extension EventsViewController: EventTableViewCellDelegate {
             
             guard let index = EventController.shared.events.firstIndex(of: event) else  { return }
             
-            EventController.shared.delete(event) { result in
-                switch result {
-                
-                case .success( let bool ):
-                    if bool == true {
-                        EventController.shared.events.remove(at: index)
-                        DispatchQueue.main.async {
-                            // Delete row that was selected.
-                            //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
-                            self.updateViews()
+                EventController.shared.delete(event) { result in
+                    switch result {
+                    
+                    case .success( let bool ):
+                        if bool == true {
+                            EventController.shared.events.remove(at: index)
+                            DispatchQueue.main.async {
+                                // Delete row that was selected.
+                                //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
+                                self.updateViews()
+                            }
                         }
+                    case .failure(let error):
+                        print(error.localizedDescription)
                     }
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
-            }
         }
         tableView.reloadData()
     }

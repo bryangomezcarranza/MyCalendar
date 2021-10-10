@@ -62,6 +62,7 @@ class LocationTableViewController: UITableViewController {
     
     private func stopProvidingCompletions() {
         searchCompleter = nil
+        searchCompleter?.region = boundingRegion
     }
     
     private func searchSuggestions(for suggestedCompletion: MKLocalSearchCompletion) {
@@ -86,8 +87,6 @@ class LocationTableViewController: UITableViewController {
                 return
             }
             self.places = response?.mapItems
-            
-            //
             if let updateRegion = response?.boundingRegion {
                 self.boundingRegion = updateRegion
             }
@@ -130,7 +129,7 @@ class LocationTableViewController: UITableViewController {
     // MARK: - Table delegate & data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return completerSearch ? completerResults?.count ?? 0  : places?.count ?? 0
+        return completerSearch ? completerResults?.count ?? 0 : places?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -195,6 +194,7 @@ extension LocationTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchCompleter?.queryFragment = searchText
     }
+    
 }
 
 //MARK: - CLLocationManager Delegate

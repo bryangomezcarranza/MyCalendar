@@ -7,11 +7,12 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 
 class NotificationManager: NSObject {
     static let shared = NotificationManager()
     func requestPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { authorized, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound ]) { authorized, error in
             if let error = error {
                 print("There was an error requesting authorization to use notifications. Error \(error)")
             }

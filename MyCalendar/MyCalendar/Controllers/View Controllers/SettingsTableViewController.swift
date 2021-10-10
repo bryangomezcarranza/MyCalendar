@@ -48,8 +48,8 @@ class SettingsTableViewController: UITableViewController {
     //MARK: - Private Functions
 
     private func shareSheetTapped() {
-        let textToShare = "Keep track of your events and task with (Name). An App that will help you stay organized!"
-        guard let url = URL(string: "https://apps.apple.com/us/app/pixel-starships/id321756558") else { return }
+        let textToShare = "Keep track of your events and tasks with Eventz. An App that will help you stay organized!"
+        guard let url = URL(string: "https://apps.apple.com/us/app/eventz-events-reminders/id1589629318") else { return }
         let objectsToShare = UIActivityViewController(activityItems: [textToShare, url], applicationActivities: nil)
         present(objectsToShare, animated: true)
     }
@@ -98,7 +98,7 @@ class SettingsTableViewController: UITableViewController {
             }
             
             if row == 3 {
-                if  let url = URL(string: "https://apps.apple.com/us/app/(name and id)") {
+                if  let url = URL(string: "https://apps.apple.com/us/app/eventz-events-reminders/id1589629318") {
                     UIApplication.shared.open(url)
                 }
             }
@@ -133,9 +133,9 @@ class SettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 20
+            return 50
         } else {
-            return 0
+            return 50
         }
     }
     
