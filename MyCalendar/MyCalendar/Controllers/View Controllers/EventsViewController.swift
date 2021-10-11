@@ -17,7 +17,7 @@ class EventsViewController: UIViewController {
     
     //MARK: - Properties
     
-    // removes ovserver 
+    // removes ovserver
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -25,7 +25,7 @@ class EventsViewController: UIViewController {
     var refresh = UIRefreshControl()
     let notificcationScheduler = NotificationScheduler()
     
-   //MARK: - Search Bar Set Up
+    //MARK: - Search Bar Set Up
     var searchedEvents = [Date: [Event]]()
     var searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
@@ -39,7 +39,7 @@ class EventsViewController: UIViewController {
     
     var dataSource: [Date: [Event]] { //
         if isSearchBarEmpty {
-           return  eventsByDay // all of them
+            return  eventsByDay // all of them
         } else {
             return searchedEvents // filtered stuff
         }
@@ -54,7 +54,7 @@ class EventsViewController: UIViewController {
         
     }
     
-   //MARK: - Storage for Sectioning
+    //MARK: - Storage for Sectioning
     private var eventsByDay: [Date: [Event]] = [:] {
         didSet {
             if eventsByDay.count > 0 {
@@ -86,17 +86,17 @@ class EventsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateViews()
-            
+        
     }
     
-//MARK: - UI
+    //MARK: - UI
     private func navigationBarColor() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(named: "navbar-tabbar")
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance =
-navigationController?.navigationBar.standardAppearance
+        navigationController?.navigationBar.standardAppearance
     }
     
     private func searchBarSetUp() {
@@ -122,7 +122,7 @@ navigationController?.navigationBar.standardAppearance
         }
         self.tableView.reloadData()
     }
-
+    
     private func refreshSetUp() {
         refresh.attributedTitle = NSAttributedString(string: "Pull down to refresh")
         refresh.addTarget(self, action: #selector(loadData), for: .valueChanged)
@@ -197,7 +197,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         
         // return the header view here
         let day = dataSourceIndex[section]
-    
+        
         
         let view = UIView()
         view.clipsToBounds = true
@@ -227,17 +227,17 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 32
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard dataSourceIndex.indices.contains(section) else { return 0 }
         let day = dataSourceIndex[section]
         
         // No Events View
-//        if eventsByDay[day]?.count == 0 {
-//            self.tableView.isHidden = true
-//        } else {
-//            self.tableView.isHidden = false
-//        }
+        //        if eventsByDay[day]?.count == 0 {
+        //            self.tableView.isHidden = true
+        //        } else {
+        //            self.tableView.isHidden = false
+        //        }
         return dataSource[day]?.count ?? 0
     }
     
@@ -260,7 +260,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         
         // Costume Seperator
-
+        
         if (row.count == 0 && row.count < 0) {
             cell.layer.borderColor = UIColor.systemBlue.cgColor
             cell.layer.borderWidth = 0.5
@@ -268,9 +268,9 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.separatorInset.left = 100
         }
         
-       
         
-    
+        
+        
         return cell
     }
     
@@ -283,7 +283,7 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
             
             EventController.shared.delete(eventToDelete) { result in
                 switch result {
-                
+                    
                 case .success( let bool ):
                     if bool == true {
                         EventController.shared.events.remove(at: index)
@@ -328,26 +328,26 @@ extension EventsViewController: EventTableViewCellDelegate {
             
             guard let index = EventController.shared.events.firstIndex(of: event) else  { return }
             
-                EventController.shared.delete(event) { result in
-                    switch result {
+            EventController.shared.delete(event) { result in
+                switch result {
                     
-                    case .success( let bool ):
-                        if bool == true {
-                            EventController.shared.events.remove(at: index)
-                            DispatchQueue.main.async {
-                                // Delete row that was selected.
-                                //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
-                                self.updateViews()
-                            }
+                case .success( let bool ):
+                    if bool == true {
+                        EventController.shared.events.remove(at: index)
+                        DispatchQueue.main.async {
+                            // Delete row that was selected.
+                            //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
+                            self.updateViews()
                         }
-                    case .failure(let error):
-                        print(error.localizedDescription)
                     }
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
+            }
         }
         tableView.reloadData()
     }
-     
+    
 }
 
 //MARK: - SearchBar Delegate & ResultUpdating

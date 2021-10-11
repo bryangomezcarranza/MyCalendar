@@ -31,7 +31,7 @@ class EventTableViewCell: UITableViewCell {
     @IBAction func hasBeenCompletedButtonTapped(_ sender: Any) {
         delegate?.eventCellButtonTapped(self)
         print("buttonRapped")
-            
+        
     }
     
     func updateViews() {
@@ -45,7 +45,7 @@ class EventTableViewCell: UITableViewCell {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
         dateLabel.text = "Starts at: \(event.dueDate.formatDate())"
         dateLabel.layer.opacity = 0.7
-       
+        
         
         UserDefaults.standard.set(event.isCompleted, forKey: "itsCompleted")
         let image = event.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")

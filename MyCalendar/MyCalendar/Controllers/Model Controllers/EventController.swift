@@ -12,7 +12,7 @@ class EventController {
     static let shared = EventController()
     let notificcationScheduler = NotificationScheduler()
 
-    let publicDB = CKContainer.default().privateCloudDatabase
+    let database = CKContainer.default().privateCloudDatabase
     var events = [Event]()
     
     
@@ -22,7 +22,7 @@ class EventController {
         let record = CKRecord(event: newEvent)
 
         
-        publicDB.save(record) { record, error in
+        database.save(record) { record, error in
             if let error = error {
                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                completion(.failure(.ckError(error)))
@@ -40,7 +40,7 @@ class EventController {
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: EventStrings.recordTypeKey, predicate: predicate)
        
-        publicDB.perform(query, inZoneWith: nil) { records, error in
+        database.perform(query, inZoneWith: nil) { records, error in
             if let error = error {
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
                 completion(.failure(.ckError(error)))
@@ -70,7 +70,7 @@ class EventController {
             print("Updated contact with a name '\(updateEvent.name)' successfully in your iCloud.")
             completion(.success(updateEvent))
         }
-        publicDB.add(operation)
+        database.add(operation)
         
         notificcationScheduler.scheduleNotification(for: event)
     }
@@ -90,7 +90,7 @@ class EventController {
                 completion(.failure(.unexpectedRecordsFound))
             }
         }
-        publicDB.add(operation)
+        database.add(operation)
         
         notificcationScheduler.clearNotifications(for: event)
     }

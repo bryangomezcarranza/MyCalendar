@@ -9,17 +9,17 @@ import UIKit
 import MapKit
 
 class LocationMapCell: UITableViewCell {
-
+    
     @IBOutlet weak var mapView: MKMapView!    
     override func awakeFromNib() {
         super.awakeFromNib()
         mapView.layer.cornerRadius = 12
-
+        
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -30,7 +30,7 @@ class LocationMapCell: UITableViewCell {
         
         let annotation = MKPointAnnotation()
         let geoCoder = CLGeocoder()
-       // self.mapView.removeAnnotation(annotation)
+        // self.mapView.removeAnnotation(annotation)
         
         
         print(location)

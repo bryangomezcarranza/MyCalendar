@@ -8,9 +8,8 @@
 import UIKit
 import MapKit
 
-
 class EventDetailTableViewController: UITableViewController, UITextViewDelegate {
-
+    
     //MARK: - Properties
     var event: Event?
     var reminderDate: Date?
@@ -41,7 +40,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     //MARK: - Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
         guard let title = titleTextField.text, !title.isEmpty, let note = noteTextView.text, let dueDate = dueDateTextField.text, !dueDate.isEmpty, let location = locationTextField.text  else { return }
-    
+        
         let reminder = reminderDatePicker.date
         
         if let event = event {
@@ -50,10 +49,10 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
             event.dueDate = dueDate.toDate()
             event.location = location
             event.reminderDate = reminder
-
+            
             EventController.shared.updateEvent(event) { result in
                 switch result {
-                
+                    
                 case .success(_):
                     print("Succesfully updated")
                 case .failure(let error):
@@ -63,7 +62,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         } else  {
             EventController.shared.createEvent(with: title, note: note, dueDate: dueDate.toDate(), reminderDate: reminder, location: location) { result in
                 switch result {
-                
+                    
                 case .success( let event):
                     guard let event = event else { return }
                     EventController.shared.events.insert(event, at: 0)
@@ -75,7 +74,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         }
         navigationController?.popViewController(animated: true)
     }
-
+    
     
     @IBAction func reminderDatePicker(_ sender: Any) {
         guard let date = reminderDate else { return }
@@ -95,10 +94,10 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     private func createToolBar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-
+        
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
         toolbar.setItems([doneButton], animated: true)
-
+        
         return toolbar
     }
     
@@ -107,9 +106,9 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         dueDateTextField.inputView = datePicker
         dueDateTextField.inputAccessoryView = createToolBar()
     }
-
-   @objc private func donePressed() {
-       self.dueDateTextField.text = datePicker.date.formatDueDate()
+    
+    @objc private func donePressed() {
+        self.dueDateTextField.text = datePicker.date.formatDueDate()
         self.view.endEditing(true)
     }
     
@@ -122,7 +121,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         locationTextField.text = event.location
         reminderDatePicker.date = event.reminderDate
         
-       
+        
         
         locationTextField.adjustsFontSizeToFitWidth = true
         locationTextField.minimumFontSize = 14

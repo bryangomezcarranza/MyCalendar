@@ -27,11 +27,11 @@ class LocationTableViewController: UITableViewController {
     private var places: [MKMapItem]?
     private var localSearch: MKLocalSearch?
     
-//MARK: - Properties
+    //MARK: - Properties
     let searchController = UISearchController(searchResultsController: nil)
     weak var delegate: UpdateLocationProtocol?
     
-//MARK: - Lifecycle
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,7 +48,7 @@ class LocationTableViewController: UITableViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
-       
+        
         startObserving(&UserInterfaceStyleManager.shared)
         locationManager.delegate = self
     }
@@ -107,27 +107,27 @@ class LocationTableViewController: UITableViewController {
     }
     
     
-        private func displayLocationServicesDeniedAlert() {
-            let alertController = UIAlertController(title: "Location Authorization",
-                                                    message: "Need your current location to search for near by places",
-                                                    preferredStyle: .alert)
-            let openSettingsAction = UIAlertAction(title: "Update Settings", style: .default) { (_) in
-                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-    
-                    UIApplication.shared.open(settingsURL)
-                }
+    private func displayLocationServicesDeniedAlert() {
+        let alertController = UIAlertController(title: "Location Authorization",
+                                                message: "Need your current location to search for near by places",
+                                                preferredStyle: .alert)
+        let openSettingsAction = UIAlertAction(title: "Update Settings", style: .default) { (_) in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                
+                UIApplication.shared.open(settingsURL)
             }
-    
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-    
-            alertController.addAction(cancelAction)
-            alertController.addAction(openSettingsAction)
-            present(alertController, animated: true, completion: nil)
         }
-
-
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(openSettingsAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
     // MARK: - Table delegate & data source
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return completerSearch ? completerResults?.count ?? 0 : places?.count ?? 0
     }
@@ -248,7 +248,7 @@ extension LocationTableViewController: CLLocationManagerDelegate {
         default: break
         }
     }
-
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)

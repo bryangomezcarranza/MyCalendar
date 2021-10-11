@@ -88,14 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5B482CA7270CC1FE0081EB25 /* Observer */ = {
+		5B482CA7270CC1FE0081EB25 /* Dark Mode Obvserver */ = {
 			isa = PBXGroup;
 			children = (
 				5B482CA8270CC2130081EB25 /* UserInterfaceStyleManager.swift */,
 				5B482CAA270CC2330081EB25 /* UserInterfaceStylerObserver.swift */,
 				5B482CAC270CC2670081EB25 /* WeakStyleObserver.swift */,
 			);
-			path = Observer;
+			path = "Dark Mode Obvserver";
 			sourceTree = "<group>";
 		};
 		5B48F9A026DD97130056F2EE = {
@@ -119,7 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				5B48F9C026DD97230056F2EE /* MyCalendar.entitlements */,
-				5B482CA7270CC1FE0081EB25 /* Observer */,
+				5B482CA7270CC1FE0081EB25 /* Dark Mode Obvserver */,
 				5B48FA0526DEA0F20056F2EE /* Helpers+Extensions */,
 				5B48F9C726DD982D0056F2EE /* Models */,
 				5B48F9C626DD98270056F2EE /* Views */,

@@ -72,7 +72,7 @@ class DetailViewController: UIViewController {
     public func openMapForPlace(lat:Double = 0, long:Double = 0, placeName:String = "") {
         let latitude: CLLocationDegrees = lat
         let longitude: CLLocationDegrees = long
-
+        
         let regionDistance:CLLocationDistance = 100
         let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
         let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
@@ -85,7 +85,7 @@ class DetailViewController: UIViewController {
         mapItem.name = placeName
         mapItem.openInMaps(launchOptions: options)
     }
-
+    
 }
 //MARK: - UITableView Delegate & Data Source
 extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
@@ -98,7 +98,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         switch indexPath.row {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: EventInfoCell.self), for: indexPath) as! EventInfoCell
@@ -132,9 +132,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         
         if row == 2 {
             if  eventLocation?.isEmpty == true {
-              return 0
+                return 0
             } else  {
-             return 200
+                return 200
             }
         } else if row == 0 {
             return 150
@@ -142,7 +142,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             if eventNote?.isEmpty == true {
                 return 0
             } else {
-            return 90
+                return 90
             }
         } else {
             return tableView.rowHeight

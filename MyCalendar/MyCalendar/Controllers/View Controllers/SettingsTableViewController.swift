@@ -9,7 +9,7 @@ import UIKit
 import MessageUI
 
 class SettingsTableViewController: UITableViewController {
-
+    
     @IBOutlet weak var darkModeSwitch: UISwitch!
     @IBOutlet weak var bottomView: UIView!
     
@@ -24,7 +24,7 @@ class SettingsTableViewController: UITableViewController {
         
         startObserving(&UserInterfaceStyleManager.shared)
         darkModeSwitch.isOn = UserInterfaceStyleManager.shared.currentStyle == .dark
-
+        
     }
     
     //MARK: - Actions
@@ -46,7 +46,7 @@ class SettingsTableViewController: UITableViewController {
     }
     
     //MARK: - Private Functions
-
+    
     private func shareSheetTapped() {
         let textToShare = "Keep track of your events and tasks with Eventz. An App that will help you stay organized!"
         guard let url = URL(string: "https://apps.apple.com/us/app/eventz-events-reminders/id1589629318") else { return }
@@ -65,12 +65,12 @@ class SettingsTableViewController: UITableViewController {
         
         present(composer, animated: true)
     }
-
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 4
@@ -81,7 +81,7 @@ class SettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-       
+        
         let section = indexPath.section, row = indexPath.row
         
         if (section == 0) {
@@ -90,7 +90,7 @@ class SettingsTableViewController: UITableViewController {
                     UIApplication.shared.open(url)
                 }
             }
-        
+            
             if row == 1 {
                 if let url = URL(string: "https://www.instagram.com/eventzapplication/") {
                     UIApplication.shared.open(url)
