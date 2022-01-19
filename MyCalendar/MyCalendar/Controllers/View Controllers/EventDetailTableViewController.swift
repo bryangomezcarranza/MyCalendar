@@ -11,13 +11,13 @@ import MapKit
 class EventDetailTableViewController: UITableViewController, UITextViewDelegate {
     
     //MARK: - Properties
+    
     var event: Event?
     var reminderDate: Date?
-    
     let datePicker = UIDatePicker()
     
-    
     //MARK: - Outlets
+    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var reminderDatePicker: UIDatePicker!
@@ -28,7 +28,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     //MARK: - Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         updateViews()
         createDatePickerView()
         navBarAppearance()
@@ -38,9 +38,10 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     }
     
     //MARK: - Actions
+    
     @IBAction func saveButtonTapped(_ sender: Any) {
-        guard let title = titleTextField.text, !title.isEmpty, let note = noteTextView.text, let dueDate = dueDateTextField.text, !dueDate.isEmpty, let location = locationTextField.text  else { return }
         
+        guard let title = titleTextField.text, !title.isEmpty, let note = noteTextView.text, let dueDate = dueDateTextField.text, !dueDate.isEmpty, let location = locationTextField.text  else { return }
         let reminder = reminderDatePicker.date
         
         if let event = event {
@@ -51,8 +52,8 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
             event.reminderDate = reminder
             
             EventController.shared.updateEvent(event) { result in
+                
                 switch result {
-                    
                 case .success(_):
                     print("Succesfully updated")
                 case .failure(let error):
@@ -60,9 +61,11 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
                 }
             }
         } else  {
-            EventController.shared.createEvent(with: title, note: note, dueDate: dueDate.toDate(), reminderDate: reminder, location: location) { result in
+            
+            EventController.shared.createEvent(with: title, note: note, dueDate: dueDate.toDate(), reminderDate: reminder, location: location) { [weak self] result in
+                guard let self = self else { return }
+                
                 switch result {
-                    
                 case .success( let event):
                     guard let event = event else { return }
                     EventController.shared.events.insert(event, at: 0)
@@ -83,6 +86,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     
     //MARK: - UI
     private func navBarAppearance() {
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(named: "navbar-tabbar")
@@ -91,6 +95,7 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     }
     
     //MARK: - Helper Methods
+    
     private func createToolBar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -102,12 +107,14 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     }
     
     private func createDatePickerView() {
+        
         datePicker.preferredDatePickerStyle = .wheels
         dueDateTextField.inputView = datePicker
         dueDateTextField.inputAccessoryView = createToolBar()
     }
     
     @objc private func donePressed() {
+        
         self.dueDateTextField.text = datePicker.date.formatDueDate()
         self.view.endEditing(true)
     }
@@ -121,10 +128,9 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         locationTextField.text = event.location
         reminderDatePicker.date = event.reminderDate
         
-        
-        
         locationTextField.adjustsFontSizeToFitWidth = true
         locationTextField.minimumFontSize = 14
+        
         reminderDatePicker.preferredDatePickerStyle = .compact
         reminderDatePicker.inputView?.sizeToFit()
     }
@@ -145,7 +151,7 @@ extension EventDetailTableViewController: UpdateLocationProtocol {
 }
 
 //MARK: - UITextView Delegate for Placeholder
-extension UITextView :UITextViewDelegate {
+extension UITextView: UITextViewDelegate {
     
     override open var bounds: CGRect {
         didSet {

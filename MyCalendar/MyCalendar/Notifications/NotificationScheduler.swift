@@ -25,7 +25,7 @@ class NotificationScheduler {
         content.userInfo = [StringConstants.eventID : identifier]
         content.categoryIdentifier = StringConstants.eventReminderCategoryIdentifier
         
-        let fireDateComponent = Calendar.current.dateComponents([.hour, .minute], from: timeOfDay)
+        let fireDateComponent = Calendar.current.dateComponents([.hour, .minute, .day], from: timeOfDay)
         let trigger = UNCalendarNotificationTrigger(dateMatching: fireDateComponent, repeats: false)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         

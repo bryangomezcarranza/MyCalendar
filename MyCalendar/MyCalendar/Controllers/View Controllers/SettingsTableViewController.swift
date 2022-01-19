@@ -147,6 +147,7 @@ class SettingsTableViewController: UITableViewController {
 //MARK: - Section Heading
 extension SettingsTableViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
         if let _ = error {
             // Show error alert
             controller.dismiss(animated: true)

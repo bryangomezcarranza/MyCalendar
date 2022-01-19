@@ -15,12 +15,14 @@ class EventInfoCell: UITableViewCell {
         }
        
     }
+    
     @IBOutlet weak var dueDateLabel: UILabel! {
         didSet {
             dueDateLabel.adjustsFontSizeToFitWidth = true
             dueDateLabel.numberOfLines = 0
         }
     }
+    
     @IBOutlet weak var addressLabel: UILabel! {
         didSet {
             addressLabel.adjustsFontSizeToFitWidth = true
@@ -28,9 +30,7 @@ class EventInfoCell: UITableViewCell {
         }
     }
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
 }

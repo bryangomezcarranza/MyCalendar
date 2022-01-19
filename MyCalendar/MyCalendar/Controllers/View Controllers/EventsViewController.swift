@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import CloudKit
 
 class EventsViewController: UIViewController {
+    
     //MARK: - Outlets
+    
     @IBOutlet weak var monthLabelButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noEventsView: UIView!
@@ -25,7 +28,10 @@ class EventsViewController: UIViewController {
     var refresh = UIRefreshControl()
     let notificcationScheduler = NotificationScheduler()
     
-    //MARK: - Search Bar Set Up
+    //MARK: - Search Bar Properties
+    
+    var event: Event?
+    
     var searchedEvents = [Date: [Event]]()
     var searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
@@ -33,6 +39,7 @@ class EventsViewController: UIViewController {
     }
     
     //MARK: - Computed Properties
+    
     var isFiltering: Bool {
         return searchController.isActive && !isSearchBarEmpty
     }
@@ -51,10 +58,10 @@ class EventsViewController: UIViewController {
         } else {
             return searchedEvents.keys.sorted()
         }
-        
     }
     
     //MARK: - Storage for Sectioning
+    
     private var eventsByDay: [Date: [Event]] = [:] {
         didSet {
             if eventsByDay.count > 0 {
@@ -64,9 +71,11 @@ class EventsViewController: UIViewController {
             }
         }
     }
+    
     private var sectionIndex: [Date] = []
     
     //MARK: - Lifecycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,20 +85,17 @@ class EventsViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(UIApplication.didBecomeActiveNotification.rawValue), object: nil)
         startObserving(&UserInterfaceStyleManager.shared)
-        
         refreshSetUp()
         setupViews()
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateViews()
-        
     }
     
     //MARK: - UI
+    
     private func navigationBarColor() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -110,18 +116,6 @@ class EventsViewController: UIViewController {
     }
     
     //MARK: - Helpers
-    private func reloadView() {
-        EventController.shared.fetchEvent { result in
-            switch result {
-            case .success(let event):
-                EventController.shared.events = event
-                self.updateViews()
-            case .failure(let error):
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-            }
-        }
-        self.tableView.reloadData()
-    }
     
     private func refreshSetUp() {
         refresh.attributedTitle = NSAttributedString(string: "Pull down to refresh")
@@ -130,10 +124,15 @@ class EventsViewController: UIViewController {
     }
     
     @objc private func loadData() {
-        EventController.shared.fetchEvent { result in
+        
+        EventController.shared.fetchEvent { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let event):
-                EventController.shared.events = event
+                // Goes through each Event and if its equal to 0 it will fetch it.
+                let events = event.filter({$0.isCompleted == 0 })
+                EventController.shared.events = events
                 self.updateViews()
             case .failure(let error):
                 print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
@@ -144,12 +143,14 @@ class EventsViewController: UIViewController {
     private func updateViews() {
         DispatchQueue.main.async {
             self.eventsByDay = [:]
+            
             for event in EventController.shared.events {
                 let date = Calendar.current.startOfDay(for: event.dueDate)// makes todays date the due date.
                 var events = self.eventsByDay[date] ?? []
                 events.append(event)
                 self.eventsByDay[date] = events
             }
+            
             self.sectionIndex = self.eventsByDay.keys.sorted()
             self.tableView.reloadData()
             self.refresh.endRefreshing()
@@ -157,7 +158,9 @@ class EventsViewController: UIViewController {
     }
     
     private func filterContent(searchText: String) {
+        
         searchedEvents =  [:]
+        
         for (key, value) in eventsByDay {
             let filtered = value.filter { $0.name.lowercased().contains(searchText.lowercased()) }
             
@@ -225,54 +228,41 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        let title = self.tableView(tableView, titleForHeaderInSection: section)
+//
+//        if title == " " {
+//            return -32
+//
+//        }
+        
         return 32
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         guard dataSourceIndex.indices.contains(section) else { return 0 }
         let day = dataSourceIndex[section]
         
-        // No Events View
-        //        if eventsByDay[day]?.count == 0 {
-        //            self.tableView.isHidden = true
-        //        } else {
-        //            self.tableView.isHidden = false
-        //        }
         return dataSource[day]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let row = [indexPath.row]
         
         guard dataSourceIndex.indices.contains(indexPath.section) else { return UITableViewCell() }
         let day = dataSourceIndex[indexPath.section]
         
         guard let events = dataSource[day], events.indices.contains(indexPath.row) else { return UITableViewCell() }
         
-        
         let event = events[indexPath.row]
-        
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
         
         cell.event = event
         cell.delegate = self
         
-        // Costume Seperator
-        
-        if (row.count == 0 && row.count < 0) {
-            cell.layer.borderColor = UIColor.systemBlue.cgColor
-            cell.layer.borderWidth = 0.5
-        } else if (row.count == 0 && row.count > 0) {
-            cell.separatorInset.left = 100
-        }
-        
-        
-        
-        
         return cell
     }
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -281,9 +271,10 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
             
             guard let index = EventController.shared.events.firstIndex(of: eventToDelete) else  { return }
             
-            EventController.shared.delete(eventToDelete) { result in
+            EventController.shared.delete(eventToDelete) { [weak self] result in
+                guard let self = self else { return }
+                
                 switch result {
-                    
                 case .success( let bool ):
                     if bool == true {
                         EventController.shared.events.remove(at: index)
@@ -300,11 +291,21 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        let numberOfRows = self.tableView(tableView, numberOfRowsInSection: section)
+//        if numberOfRows == 0 {
+//            return " "
+//        }
+//        return nil
+//    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
     }
     
+    
     //MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToEventDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow, let destinationVC = segue.destination as? EventDetailTableViewController else { return }
@@ -317,40 +318,48 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
+
 //MARK: - isCompletedDelegate Extension
+
 extension EventsViewController: EventTableViewCellDelegate {
-    func eventCellButtonTapped(_ sender: EventTableViewCell) {
-        guard let indexPath = tableView.indexPath(for: sender) else { return }
-        let event = eventsByDay[sectionIndex[indexPath.section]]![indexPath.row]
-        EventController.shared.toggleIsCompleted(event: event)
-        
-        if event.isCompleted {
+    func eventCellButtonTapped(_ record: Event, _ cell: EventTableViewCell) {
+        EventController.shared.updateEvent(record) { [weak self] result in
+            guard let self = self else { return }
             
-            guard let index = EventController.shared.events.firstIndex(of: event) else  { return }
-            
-            EventController.shared.delete(event) { result in
-                switch result {
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async { [self] in
+                    guard let indexPath = self.tableView.indexPath(for: cell) else { return }
                     
-                case .success( let bool ):
-                    if bool == true {
-                        EventController.shared.events.remove(at: index)
-                        DispatchQueue.main.async {
-                            // Delete row that was selected.
-                            //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
-                            self.updateViews()
-                        }
+                    // If sucess, delete the row that was clicked from the Table View.
+                    let event = self.dataSourceIndex[indexPath.section]
+                    self.eventsByDay[event]?.remove(at: indexPath.row)
+                    self.tableView.deleteRows(at: [indexPath], with: .left)
+                    
+                    let section = indexPath.section
+                    let rows = self.tableView(self.tableView, numberOfRowsInSection: section)
+                    
+                    // Deletes the section if there is no rows.
+                    if rows == 0 {
+                        self.tableView.beginUpdates()
+                        self.eventsByDay.removeValue(forKey: event)
+                        self.tableView.deleteSections([indexPath.section], with: .left)
+                        self.tableView.endUpdates()
                     }
-                case .failure(let error):
-                    print(error.localizedDescription)
+                    
+                    self.tableView.reloadData()
+                    
+                    print("Succesfully updated")
                 }
+            case .failure(let error):
+                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
             }
         }
-        tableView.reloadData()
     }
-    
 }
 
 //MARK: - SearchBar Delegate & ResultUpdating
+
 extension EventsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar

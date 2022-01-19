@@ -120,7 +120,9 @@
 			children = (
 				5B48F9C026DD97230056F2EE /* MyCalendar.entitlements */,
 				5B482CA7270CC1FE0081EB25 /* Dark Mode Obvserver */,
-				5B48FA0526DEA0F20056F2EE /* Helpers+Extensions */,
+				5B48FA0526DEA0F20056F2EE /* Extensions */,
+				5BC1DE872729CD1200CF3922 /* Utilities */,
+				5BC1DE862729CCC700CF3922 /* Notifications */,
 				5B48F9C726DD982D0056F2EE /* Models */,
 				5B48F9C626DD98270056F2EE /* Views */,
 				5B48F9C526DD981C0056F2EE /* Controllers */,
@@ -209,18 +211,13 @@
 			path = CostumeCells;
 			sourceTree = "<group>";
 		};
-		5B48FA0526DEA0F20056F2EE /* Helpers+Extensions */ = {
+		5B48FA0526DEA0F20056F2EE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				5B48FA0D26DEB6150056F2EE /* EventError.swift */,
 				5B779A9C26E168B8009B05B8 /* DayFormatter.swift */,
 				5BB7258626E543EB003C997E /* StringDateFormatter.swift */,
-				5BB725F726E9653F003C997E /* MKPlacemark.swift */,
-				5B5BA85E26FAE7EC00D2189A /* NotificationScheduler.swift */,
-				5B5BA86026FAE9DB00D2189A /* StringConstants.swift */,
-				5B59E4AB26FD3D0700B8642C /* NotificationManger.swift */,
 			);
-			path = "Helpers+Extensions";
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5B48FA0A26DEB4150056F2EE /* Model Controllers */ = {
@@ -229,6 +226,25 @@
 				5B48FA0B26DEB4290056F2EE /* EventController.swift */,
 			);
 			path = "Model Controllers";
+			sourceTree = "<group>";
+		};
+		5BC1DE862729CCC700CF3922 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				5B59E4AB26FD3D0700B8642C /* NotificationManger.swift */,
+				5B5BA85E26FAE7EC00D2189A /* NotificationScheduler.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		5BC1DE872729CD1200CF3922 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5B48FA0D26DEB6150056F2EE /* EventError.swift */,
+				5B5BA86026FAE9DB00D2189A /* StringConstants.swift */,
+				5BB725F726E9653F003C997E /* MKPlacemark.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

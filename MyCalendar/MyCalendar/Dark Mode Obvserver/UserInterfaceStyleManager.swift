@@ -11,7 +11,6 @@ import UIKit
 struct UserInterfaceStyleManager {
     
     static let userInterfaceStyleDarkModeOn = "userInterfaceStyleDarkModeOn";
-    
     static var shared = UserInterfaceStyleManager()
     private var observers = [ObjectIdentifier : WeakStyleObserver]()
     

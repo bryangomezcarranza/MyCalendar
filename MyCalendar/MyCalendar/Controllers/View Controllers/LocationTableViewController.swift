@@ -17,6 +17,7 @@ protocol UpdateLocationProtocol: AnyObject {
 class LocationTableViewController: UITableViewController {
     
     //MARK: - Private Properties
+    
     private var locationManager = CLLocationManager()
     private var currentPlacemark: CLPlacemark?
     private var boundingRegion: MKCoordinateRegion = MKCoordinateRegion(MKMapRect.world)
@@ -28,16 +29,19 @@ class LocationTableViewController: UITableViewController {
     private var localSearch: MKLocalSearch?
     
     //MARK: - Properties
+    
     let searchController = UISearchController(searchResultsController: nil)
     weak var delegate: UpdateLocationProtocol?
     
     //MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
         startProvidingCompletions()
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         stopProvidingCompletions()

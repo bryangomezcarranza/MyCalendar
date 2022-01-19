@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import CloudKit
+import MapKit
 
 protocol EventTableViewCellDelegate: AnyObject {
-    func eventCellButtonTapped(_ sender: EventTableViewCell)
+    func eventCellButtonTapped(_ record: Event, _ cell: EventTableViewCell)
 }
 
 class EventTableViewCell: UITableViewCell {
@@ -18,8 +20,12 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var itsCompletedButton: UIButton!
     
     //MARK: - Properties
-    weak var delegate: EventTableViewCellDelegate?
     
+    private var isChecked: Bool = false
+    private let uncheckedIcon = UIImage(systemName: "square")!
+    private let checkedIcon = UIImage(systemName: "checkmark.square")!
+    
+    weak var delegate: EventTableViewCellDelegate?
     
     var event: Event? {
         didSet {
@@ -28,27 +34,43 @@ class EventTableViewCell: UITableViewCell {
     }
     
     //MARK: - Actions
+    
     @IBAction func hasBeenCompletedButtonTapped(_ sender: Any) {
-        delegate?.eventCellButtonTapped(self)
-        print("buttonRapped")
+        guard let event = event else { return }
         
+        isChecked.toggle()
+      
+        
+        if isChecked  {
+            event.isCompleted = 1
+        } else {
+            event.isCompleted = 0
+        }
+        
+        itsCompletedButton.setBackgroundImage(isChecked ? checkedIcon : uncheckedIcon, for: .normal)
+        
+        delegate?.eventCellButtonTapped(event, self)
     }
     
     func updateViews() {
+
         guard let event = event else {
-            // in the case that event does not exist, clear the text fields
             titleLabel.text = ""
             dateLabel.text = ""
             return
         }
+        
         titleLabel.text = event.name
         titleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
         dateLabel.text = "Starts at: \(event.dueDate.formatDate())"
         dateLabel.layer.opacity = 0.7
         
-        
-        UserDefaults.standard.set(event.isCompleted, forKey: "itsCompleted")
-        let image = event.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
-        itsCompletedButton.setImage(image, for: .normal)
+        if (event.isCompleted == 0) {
+            self.isChecked = false
+            itsCompletedButton.setBackgroundImage(uncheckedIcon, for: .normal)
+        } else {
+            self.isChecked = true
+            itsCompletedButton.setBackgroundImage(checkedIcon, for: .normal)
+        }
     }
 }
