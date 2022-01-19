@@ -7,7 +7,6 @@
 
 import Foundation
 
-// we can call the property name instead of the actual string
 enum StringConstants {
     
         static let ignore = "Ignore for now"

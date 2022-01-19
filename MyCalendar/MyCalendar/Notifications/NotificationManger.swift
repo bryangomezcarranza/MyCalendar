@@ -10,7 +10,9 @@ import UserNotifications
 import UIKit
 
 class NotificationManager: NSObject {
+    
     static let shared = NotificationManager()
+    
     func requestPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound ]) { authorized, error in
             if let error = error {
@@ -35,8 +37,8 @@ class NotificationManager: NSObject {
         
         UNUserNotificationCenter.current().setNotificationCategories([medicationActionsCategory])
     }
-    
 }
+
 //MARK: - Notification Delegate
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
@@ -48,6 +50,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
-            completionHandler()
+        completionHandler()
     }
 }

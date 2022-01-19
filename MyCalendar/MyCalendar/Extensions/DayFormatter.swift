@@ -8,11 +8,9 @@
 import Foundation
 
 extension Date {
+    
     func formatDay() -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter.string(from: self)
+        return formatted(.dateTime.month(.abbreviated).day().year())
     }
 }
 
@@ -27,9 +25,6 @@ extension Date {
 
 extension Date {
     func formatDate() -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        return formatter.string(from: self)
+        return formatted(.dateTime.hour().minute())
     }
 }

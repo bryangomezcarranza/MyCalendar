@@ -14,6 +14,7 @@ enum EventError: LocalizedError {
     case unexpectedRecordsFound
     
     var errorDescription: String? {
+        
         switch self {
         case .ckError(let error):
             return error.localizedDescription
