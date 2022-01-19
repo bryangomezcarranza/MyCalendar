@@ -228,13 +228,6 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        let title = self.tableView(tableView, titleForHeaderInSection: section)
-//
-//        if title == " " {
-//            return -32
-//
-//        }
-        
         return 32
     }
     
@@ -279,8 +272,6 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
                     if bool == true {
                         EventController.shared.events.remove(at: index)
                         DispatchQueue.main.async {
-                            // Delete row that was selected.
-                            //self.eventsByDay[eventToDelete.dueDate]?.remove(at: indexPath.row)
                             self.updateViews()
                         }
                     }
@@ -290,14 +281,6 @@ extension EventsViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        let numberOfRows = self.tableView(tableView, numberOfRowsInSection: section)
-//        if numberOfRows == 0 {
-//            return " "
-//        }
-//        return nil
-//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
