@@ -76,10 +76,12 @@ class EventsViewController: UIViewController {
     
     //MARK: - Lifecycles
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loadData()
+        
         searchBarSetUp()
         navigationBarColor()
         
@@ -89,11 +91,16 @@ class EventsViewController: UIViewController {
         setupViews()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateViews()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        updateViews()
+    }
+
+
     //MARK: - UI
     
     private func navigationBarColor() {
@@ -131,7 +138,7 @@ class EventsViewController: UIViewController {
             switch result {
             case .success(let event):
                 // Goes through each Event and if its equal to 0 it will fetch it.
-                let events = event.filter({$0.isCompleted == 0 })
+                let events = event.filter({$0.isCompleted != 1 })
                 EventController.shared.events = events
                 self.updateViews()
             case .failure(let error):
@@ -311,27 +318,27 @@ extension EventsViewController: EventTableViewCellDelegate {
             
             switch result {
             case .success(_):
-                DispatchQueue.main.async { [self] in
+                DispatchQueue.main.async {
                     guard let indexPath = self.tableView.indexPath(for: cell) else { return }
+                    print(indexPath)
                     
                     // If sucess, delete the row that was clicked from the Table View.
+                    
                     let event = self.dataSourceIndex[indexPath.section]
                     self.eventsByDay[event]?.remove(at: indexPath.row)
                     self.tableView.deleteRows(at: [indexPath], with: .left)
+                    self.tableView.reloadData()
                     
-                    let section = indexPath.section
-                    let rows = self.tableView(self.tableView, numberOfRowsInSection: section)
+                    let rowCount = self.tableView.numberOfRows(inSection: indexPath.section)
                     
                     // Deletes the section if there is no rows.
-                    if rows == 0 {
+                    if rowCount == 0 {
                         self.tableView.beginUpdates()
                         self.eventsByDay.removeValue(forKey: event)
                         self.tableView.deleteSections([indexPath.section], with: .left)
                         self.tableView.endUpdates()
                     }
-                    
-                    self.tableView.reloadData()
-                    
+
                     print("Succesfully updated")
                 }
             case .failure(let error):

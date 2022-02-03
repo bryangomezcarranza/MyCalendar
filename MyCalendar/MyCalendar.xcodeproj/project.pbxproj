@@ -27,6 +27,7 @@
 		5B5BA85F26FAE7EC00D2189A /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BA85E26FAE7EC00D2189A /* NotificationScheduler.swift */; };
 		5B5BA86126FAE9DB00D2189A /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BA86026FAE9DB00D2189A /* StringConstants.swift */; };
 		5B779A9D26E168B8009B05B8 /* DayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B779A9C26E168B8009B05B8 /* DayFormatter.swift */; };
+		5B9865222798A3B80030AC66 /* CompletedEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9865212798A3B80030AC66 /* CompletedEventsViewController.swift */; };
 		5BB6E9BA2700E937009D9D76 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9B92700E937009D9D76 /* DetailViewController.swift */; };
 		5BB6E9BC270102C9009D9D76 /* LocationMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */; };
 		5BB6E9BE270120BC009D9D76 /* EventInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */; };
@@ -37,6 +38,7 @@
 		5BB725F826E9653F003C997E /* MKPlacemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB725F726E9653F003C997E /* MKPlacemark.swift */; };
 		5BB7262226EBCBBB003C997E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB7262126EBCBBB003C997E /* MapKit.framework */; };
 		5BB7265526F01215003C997E /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7265426F01215003C997E /* SettingsTableViewController.swift */; };
+		5BD2C3352799F7E1008E1438 /* CompletedEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD2C3342799F7E1008E1438 /* CompletedEventCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,7 @@
 		5B5BA85E26FAE7EC00D2189A /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		5B5BA86026FAE9DB00D2189A /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		5B779A9C26E168B8009B05B8 /* DayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFormatter.swift; sourceTree = "<group>"; };
+		5B9865212798A3B80030AC66 /* CompletedEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedEventsViewController.swift; sourceTree = "<group>"; };
 		5BB6E9B92700E937009D9D76 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMapCell.swift; sourceTree = "<group>"; };
 		5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfoCell.swift; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		5BB725F726E9653F003C997E /* MKPlacemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKPlacemark.swift; sourceTree = "<group>"; };
 		5BB7262126EBCBBB003C997E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		5BB7265426F01215003C997E /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		5BD2C3342799F7E1008E1438 /* CompletedEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedEventCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +200,7 @@
 				5BB6E9B92700E937009D9D76 /* DetailViewController.swift */,
 				5B482CAF270CC4D80081EB25 /* MyNavigationController.swift */,
 				5B482CB1270CC64F0081EB25 /* TabBarController.swift */,
+				5B9865212798A3B80030AC66 /* CompletedEventsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 				5BB6E9BB270102C9009D9D76 /* LocationMapCell.swift */,
 				5BB6E9BD270120BC009D9D76 /* EventInfoCell.swift */,
 				5BB6E9BF270124B4009D9D76 /* EventNoteCell.swift */,
+				5BD2C3342799F7E1008E1438 /* CompletedEventCell.swift */,
 			);
 			path = CostumeCells;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 			files = (
 				5B5BA86126FAE9DB00D2189A /* StringConstants.swift in Sources */,
 				5BB7258B26E80C26003C997E /* LocationTableViewController.swift in Sources */,
+				5BD2C3352799F7E1008E1438 /* CompletedEventCell.swift in Sources */,
 				5BB6E9BC270102C9009D9D76 /* LocationMapCell.swift in Sources */,
 				5B59E4AC26FD3D0700B8642C /* NotificationManger.swift in Sources */,
 				5BB6E9C0270124B4009D9D76 /* EventNoteCell.swift in Sources */,
@@ -332,6 +339,7 @@
 				5BB6E9BA2700E937009D9D76 /* DetailViewController.swift in Sources */,
 				5B482CA9270CC2130081EB25 /* UserInterfaceStyleManager.swift in Sources */,
 				5B48FA0926DEAEFF0056F2EE /* Event.swift in Sources */,
+				5B9865222798A3B80030AC66 /* CompletedEventsViewController.swift in Sources */,
 				5B48F9AD26DD97130056F2EE /* AppDelegate.swift in Sources */,
 				5B48FA0C26DEB4290056F2EE /* EventController.swift in Sources */,
 				5BB6E9BE270120BC009D9D76 /* EventInfoCell.swift in Sources */,
