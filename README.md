@@ -15,3 +15,12 @@ My Calendar is designed to help you manage your events/tasks. Its a simple and m
 
 This is a simple Event Manager app done with UIKit.
 App works with - CloudKit, MapKit, CoreLocation, UserNotifications
+
+### Motivation 
+
+This is my personal project I completed when attending DevMountain's iOS Bootcamp. This personal project was challenging as I had to work with sections and rows and with MapKit - a framework that was new to me. 
+
+### Challenge 
+
+The main challenge of this project was to learn how to use MapKit. In the iOS Bootcamp we did not learn how to use MapKit therefore I had to teach myself how to use it. 
+
