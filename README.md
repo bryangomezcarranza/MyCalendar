@@ -6,6 +6,8 @@ My Calendar is designed to help you manage your events/tasks. Its a simple and m
 
 <p align="middle">
   <img src="/../main/images/eventz-home.png" width="30.33%" />
+    <img src="/../main/images/eventz-details.png" width="30.33%" />
+      <img src="/../main/images/eventz-settings.png" width="30.33%" />
 </p>
 
 
