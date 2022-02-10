@@ -325,7 +325,6 @@
                                                     <rect key="frame" x="369" y="8" width="13" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="13" id="Udn-en-mwa"/>
-                                                        <constraint firstAttribute="height" constant="14" id="yCp-SJ-4yJ"/>
                                                     </constraints>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -333,13 +332,25 @@
                                                         <imageReference key="image" image="chevron.right" catalog="system" symbolScale="default"/>
                                                     </state>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KuW-38-oR7">
+                                                    <rect key="frame" x="30" y="16" width="24" height="24"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="tintColor" systemColor="labelColor"/>
+                                                    <state key="normal" image="checkmark" catalog="system">
+                                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="eSZ-vf-kBM" secondAttribute="bottom" constant="8" id="7Ui-XY-X5n"/>
                                                 <constraint firstItem="vyy-Te-m3X" firstAttribute="leading" secondItem="MdE-D0-Sv7" secondAttribute="leading" constant="64" id="8sx-W5-0gJ"/>
                                                 <constraint firstItem="vyy-Te-m3X" firstAttribute="top" secondItem="MdE-D0-Sv7" secondAttribute="top" constant="8" id="Fqh-wK-iJO"/>
+                                                <constraint firstItem="KuW-38-oR7" firstAttribute="leading" secondItem="MdE-D0-Sv7" secondAttribute="leading" constant="30" id="Fsh-id-3Lc"/>
+                                                <constraint firstAttribute="bottom" secondItem="KuW-38-oR7" secondAttribute="bottom" constant="16" id="HIk-3t-DJd"/>
                                                 <constraint firstAttribute="trailing" secondItem="eSZ-vf-kBM" secondAttribute="trailing" constant="32" id="X1P-9V-kZA"/>
                                                 <constraint firstAttribute="bottom" secondItem="vyy-Te-m3X" secondAttribute="bottom" constant="8" id="Za0-gC-LI4"/>
+                                                <constraint firstItem="KuW-38-oR7" firstAttribute="top" secondItem="MdE-D0-Sv7" secondAttribute="top" constant="16" id="i0W-J5-CaE"/>
+                                                <constraint firstItem="vyy-Te-m3X" firstAttribute="leading" secondItem="KuW-38-oR7" secondAttribute="trailing" constant="10" id="laT-38-iJa"/>
                                                 <constraint firstItem="eSZ-vf-kBM" firstAttribute="top" secondItem="MdE-D0-Sv7" secondAttribute="top" constant="8" id="vRj-W3-Ele"/>
                                                 <constraint firstItem="eSZ-vf-kBM" firstAttribute="leading" relation="lessThanOrEqual" secondItem="vyy-Te-m3X" secondAttribute="trailing" constant="153" id="y4Q-UM-nXK"/>
                                             </constraints>
@@ -745,13 +756,7 @@
                             <constraint firstItem="zqg-G5-fWl" firstAttribute="trailing" secondItem="HKm-fg-SYi" secondAttribute="trailing" id="zes-TW-ajL"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="iY3-Wf-lSf">
-                        <barButtonItem key="rightBarButtonItem" title="Clear All" style="plain" id="0XL-Sy-mcE">
-                            <connections>
-                                <action selector="clearAllEventsClicked:" destination="bJa-id-u5d" id="JGA-kx-qSo"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="iY3-Wf-lSf"/>
                     <connections>
                         <outlet property="tableView" destination="HKm-fg-SYi" id="4TI-SU-XQW"/>
                     </connections>
@@ -1072,6 +1077,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Image" width="25" height="25"/>
+        <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="help-button" width="422.68600463867188" height="422.68600463867188"/>
         <image name="instagram" width="50" height="50"/>

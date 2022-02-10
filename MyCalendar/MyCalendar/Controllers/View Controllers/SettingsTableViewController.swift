@@ -27,6 +27,11 @@ class SettingsTableViewController: UITableViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        configureTabBar()
+    }
+    
     //MARK: - Actions
     @IBAction func darkModeToggled(_ sender: UISwitch) {
         
@@ -46,6 +51,10 @@ class SettingsTableViewController: UITableViewController {
     }
     
     //MARK: - Private Functions
+    
+    private func configureTabBar() {
+        tabBarController?.tabBar.isHidden = false
+    }
     
     private func shareSheetTapped() {
         let textToShare = "Keep track of your events and tasks with Eventz. An App that will help you stay organized!"

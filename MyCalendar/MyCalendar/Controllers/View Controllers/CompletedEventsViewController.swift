@@ -22,14 +22,18 @@ class CompletedEventsViewController: UIViewController {
         fetchData()
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        configureTabBar()
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.tableView.reloadData()
     }
     
-    @IBAction func clearAllEventsClicked(_ sender: Any) {
- 
+    private func configureTabBar() {
+        tabBarController?.tabBar.isHidden = true
     }
     
     func fetchData() {

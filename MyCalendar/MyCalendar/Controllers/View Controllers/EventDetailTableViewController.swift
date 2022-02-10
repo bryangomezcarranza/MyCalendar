@@ -37,6 +37,11 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
         startObserving(&UserInterfaceStyleManager.shared)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureTabBar()
+    }
+    
     //MARK: - Actions
     
     @IBAction func saveButtonTapped(_ sender: Any) {
@@ -95,6 +100,10 @@ class EventDetailTableViewController: UITableViewController, UITextViewDelegate 
     }
     
     //MARK: - Helper Methods
+    
+    private func configureTabBar() {
+        tabBarController?.tabBar.isHidden = true
+    }
     
     private func createToolBar() -> UIToolbar {
         let toolbar = UIToolbar()

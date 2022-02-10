@@ -60,6 +60,8 @@ class EventsViewController: UIViewController {
         }
     }
     
+    //MARK: - Temp Array for Hidding Rows.
+    
     //MARK: - Storage for Sectioning
     
     private var eventsByDay: [Date: [Event]] = [:] {
@@ -94,6 +96,7 @@ class EventsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadData()
+        configureTabBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -123,6 +126,10 @@ class EventsViewController: UIViewController {
     }
     
     //MARK: - Helpers
+    
+    private func configureTabBar() {
+        tabBarController?.tabBar.isHidden = false
+    }
     
     private func refreshSetUp() {
         refresh.attributedTitle = NSAttributedString(string: "Pull down to refresh")

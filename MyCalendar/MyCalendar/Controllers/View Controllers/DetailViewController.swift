@@ -23,6 +23,11 @@ class DetailViewController: UIViewController {
         setupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureTabBar()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.tableView.reloadData()
@@ -48,6 +53,9 @@ class DetailViewController: UIViewController {
     }
     
     //MARK: - Helper Methods
+    private func configureTabBar() {
+        tabBarController?.tabBar.isHidden = true
+    }
     func setupView() {
         tableView.delegate = self
         tableView.dataSource = self
