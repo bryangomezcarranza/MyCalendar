@@ -85,18 +85,12 @@ class EventController {
         
         let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [event.recordID])
         operation.qualityOfService = .userInteractive
-        operation.modifyRecordsCompletionBlock = { (records, _, error) in
-            
-            if let error = error {
-                print("Error in \(#function) : \(error.localizedDescription) \n---\n \(error)")
-                completion(.failure(.ckError(error)))
-            }
-            
-            if records?.count == 0 {
-                print("Record was successfully deleted from iCloud")
-                completion(.success(true))
-            } else {
-                completion(.failure(.unexpectedRecordsFound))
+        operation.modifyRecordsResultBlock = { result in
+            switch result {
+            case .success:
+                print("Record deleted successfully")
+            case .failure(let error):
+                print("Error deleting record: \(error.localizedDescription)")
             }
         }
         

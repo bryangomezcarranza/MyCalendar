@@ -31,6 +31,7 @@ class NotificationManager: NSObject {
     }
     
     func setNotificationCategories() {
+        
         let ignoreAction = UNNotificationAction(identifier: StringConstants.ignoreNotificationActionIdentifier, title: StringConstants.ignore, options: UNNotificationActionOptions(rawValue: 0))
         
         let medicationActionsCategory = UNNotificationCategory(identifier: StringConstants.notificationCategoryIdentifier, actions: [ignoreAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
